@@ -9,8 +9,12 @@ Vagrant.configure("2") do |config|
     v.memory = 4
   end
 
-  # Defining an envrionment variable with a directory path when 
-  # calling 'vagrant up' will result ins the import of that directory
+  # You can define a single file to import to the machine or ...
+  if ENV['FILE'] != nil
+    config.vm.provision "file", source: ENV['FILE'], destination: "/home/vagrant/imported/"+ENV['FILE']
+  end
+
+  # ... you can import an entire directory
   if ENV['DIR'] != nil
     config.vm.provision "file", source: ENV['DIR'], destination: "/home/vagrant/imported"
   end
