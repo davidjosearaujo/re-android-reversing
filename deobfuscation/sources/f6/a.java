@@ -1,0 +1,44 @@
+package f6;
+
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+
+/* loaded from: classes.dex */
+public abstract class a<T> extends o {
+
+    /* renamed from: a */
+    public static final AtomicReferenceFieldUpdater f4142a = AtomicReferenceFieldUpdater.newUpdater(a.class, Object.class, "_consensus");
+    private volatile Object _consensus = a0.e.f32a0;
+
+    /* JADX WARN: Multi-variable type inference failed */
+    @Override // f6.o
+    public final Object a(Object obj) {
+        boolean z6;
+        AtomicReferenceFieldUpdater atomicReferenceFieldUpdater = f4142a;
+        Object obj2 = atomicReferenceFieldUpdater.get(this);
+        q.d dVar = a0.e.f32a0;
+        if (obj2 == dVar) {
+            q.d c7 = c(obj);
+            obj2 = atomicReferenceFieldUpdater.get(this);
+            if (obj2 == dVar) {
+                while (true) {
+                    if (!atomicReferenceFieldUpdater.compareAndSet(this, dVar, c7)) {
+                        if (atomicReferenceFieldUpdater.get(this) != dVar) {
+                            z6 = false;
+                            break;
+                        }
+                    } else {
+                        z6 = true;
+                        break;
+                    }
+                }
+                obj2 = z6 ? c7 : f4142a.get(this);
+            }
+        }
+        b(obj, obj2);
+        return obj2;
+    }
+
+    public abstract void b(T t5, Object obj);
+
+    public abstract q.d c(Object obj);
+}
