@@ -29,3 +29,5 @@ end
 
 # You can call this like:
 # $ DIR=./testing HEADLESS=YES vagrant up
+# or
+# $ FILE=test.txt HEADLESS=YES vagrant up
