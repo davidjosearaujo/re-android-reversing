@@ -1,1 +1,0 @@
-dalvik.system.InMemoryDexClassLoader|getClassLoader|loadClass|com.travisscott.pdf.MainLibrary|init|getFirstText|getSecondText|readPDFfile|getName|launch|makePdfPage|java.nio.ByteBuffer|java.lang.ClassLoader|forName|getMethod
