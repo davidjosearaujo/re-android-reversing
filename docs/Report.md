@@ -1,32 +1,58 @@
-# Authors
-- Tiago Silvestre
-- David Araujo
+---
+geometry: margin=25mm
+title: RE - PDF Manager
+author: Tiago Silvestre - 103554, David Araújo - 93444
+date: March 8, 2024
+---
 
+# Table of Contents
+1. [Introduction](#introduction)
+2. [Environment and Tools](#environment-and-tools)
+3. [Exploration Steps](#exploration-steps)
+4. [Conclusions](#conclusions) 
 
 # Introduction
+
 For our reverse engineering course, we have decided to analyze and reverse engineer the "PDF Reader File Manager" application, which was known for being removed from the Play Store earlier this year. It was developed to steal data from Android users, as explained in this article [here](https://www.tomsguide.com/computing/malware-adware/these-malicious-android-malware-apps-were-downloaded-150000-times-from-the-play-store-delete-them-right-now).
 
+# Environment and Tools
 
+## Environment
+To explore this application, we first focused on using a **secure environment** where we could ensure that the finding **wouldn't harm** the host system, and prevent the **system from tainting** any of the possible findings.
 
-# Methodology
+We used Vagrant to setup a [Kali box](https://app.vagrantup.com/kalilinux/boxes/rolling) where we could import the provided raw files for evaluation. Also [REMnux Docker container](https://docs.remnux.org/install-distro/remnux-as-a-container) was used for further forensic exploration.
 
-## Environment setup
-Using a Kali Vagrant box, we import the _PDF_Reader_File_Manager.zip_ file. This is done in order to easily isolate and replicate the testing environment so any finding are no corrupted or able to corrupt the host.
+## Tools
 
-## Unzip
-Unziping the file with `7za PDF_Reader_File_Manager.zip` results in an XAPK file and an _other_ directory.
+[TODO]
+
+# Exploration Steps & Findings
+
+## Unpack
+
+Unziping the file with `7za PDF_Reader_File_Manager.zip` results in the files and directory shown bellow.
+
+![From the zip archive](./imgs/Screenshot%20from%202024-03-08%2017-30-10.png)
+
 With a little investigation we can discover that XAPK files are just a bundle of an APKs with other files. To retrieve these we can again use `7za` and run it with the XAPK file. E now have multiple APKs, a PNG and a JSON file.
 
 ![Extracted files](./imgs/Screenshot%20from%202024-03-05%2000-41-49.png)
 
-From these files, we first look at the _manifest.json_ file, this gives us a few clues regarding **permissions and target SDK**.
+When trying to run `apktool d 1.apk` or `jadx -d out 1.apk`, we are confronted with some error. This does not happen with any other APK, so inspecting the file signatures, e can find out that **1.apk is not actually an APK** file.
 
-![manifest.json](./imgs/Screenshot%20from%202024-03-05%2000-46-20.png)
+![APK files signatures](./imgs/Screenshot%20from%202024-03-08%2017-40-55.png)
 
+Indeed, if we try to unzip the file, we are able to retrieve multiple files.
 
-# Findings
-## 'Other' path
-### Package name obfuscation
-Upon discovery, we encountered a package named "jum.khdqwmf.xftkgphgq.fhyu" containing Chinese characters. After translating these strings using Google Translate, we determined that these characters formed simple Chinese sentences unrelated to the application's purpose. Further exploration revealed that these strings were translated into package names when passed through a function. This indicates that the original authors chose to obscure package names using Chinese strings.
+![Inside the 1.apk](./imgs/Screenshot%20from%202024-03-08%2017-45-52.png)
 
-(Falta colocar prints)
+## Exploring readable files
+
+Going through the _1.apk_ files, we encountered a package named "juw.khdqwmf.xftkgphgq.fhyu" containing Chinese characters. After translating these strings using Google Translate, we determined that these characters formed simple Chinese sentences unrelated to the application's purpose. Further exploration revealed that **these strings were translated into package names when passed through a function**. This indicates that the original authors chose to obscure package names using Chinese strings.
+
+## Decompiling
+
+(TODO)
+
+3. run `apktool d -r -s com.tragisoap.fileandpdfmanager.apk`
+4. run `jadx -d out classes.dex`

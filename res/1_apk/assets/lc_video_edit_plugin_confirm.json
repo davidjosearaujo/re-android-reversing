@@ -1,0 +1,13 @@
+[
+  {
+    "name": "下一步",
+    "icon": "",
+    "params": {
+      "utParams": {
+        "exposeUTName": "Button-Next",
+        "clickUTName": ""
+      }
+    },
+    "pluginClass": "LCVideoEditActionBarNextPlugin"
+  }
+]

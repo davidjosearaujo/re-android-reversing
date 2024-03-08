@@ -1,0 +1,70 @@
+{
+  "api": "mtop.detail.mainpic",
+  "data": {
+    "data": {
+      "mainpicImg_7": {
+        "fields": {
+          "url": "http:\/\/img.alicdn.com\/imgextra\/i4\/2680068332\/TB2r4hHbhSYBuNjSspjXXX73VXa_!!2680068332.jpg"
+        },
+        "type": "mainpicImg",
+        "tag": "mainpicImg"
+      },
+      "mainpicFrame_Insert": {
+        "tag": "mainpicFrame",
+        "type": "mainpicFrame",
+        "fields": {
+          "alias": "frame_insert"
+        }
+      },
+      "lightoffMainpicImg_7": {
+        "fields": {
+          "url": "http:\/\/img.alicdn.com\/imgextra\/i4\/2680068332\/TB2r4hHbhSYBuNjSspjXXX73VXa_!!2680068332.jpg"
+        },
+        "type": "lightoffMainpicImg",
+        "tag": "lightoffMainpicImg"
+      },
+      "lightoffMainpicFrame_Insert": {
+        "tag": "lightoffMainpicFrame",
+        "type": "lightoffMainpicFrame",
+        "fields": {
+          "alias": "frame_insert"
+        }
+      }
+    },
+    "endpoint": {
+      "mode": "wireless_default",
+      "protocolVersion": "3.0",
+      "ultronage": "true"
+    },
+    "hierarchy": {
+      "delta": [
+        {
+          "opType": "insert",
+          "parent": "mainpicRoot_1",
+          "target": "mainpicFrame_Insert",
+          "position": "mainpicFrame_2"
+        },
+        {
+          "opType": "insert",
+          "parent": "lightoffRoot_1",
+          "target": "lightoffMainpicFrame_Insert",
+          "position": "lightoffMainpicFrame_2"
+        }
+      ],
+      "structure": {
+        "mainpicFrame_Insert": [
+          "mainpicImg_7"
+        ],
+        "lightoffMainpicFrame_Insert": [
+          "lightoffMainpicImg_7"
+        ]
+      }
+    },
+    "container": {},
+    "reload": "true"
+  },
+  "v": "1.0",
+  "ret": [
+    "SUCCESS::调用成功"
+  ]
+}

@@ -1,0 +1,73 @@
+[
+  {
+    "bizName": "msoa.taobao.cart.open",
+    "services": [
+      {
+        "serviceId": "msoa.taobao.cart.open.add",
+        "version": "1.0",
+        "provider": {
+          "className": "com.taobao.android.opencart.msoa.IAddBagService",
+          "implClassName": "com.taobao.android.opencart.msoa.AddBagServiceImpl",
+          "bundleName" : "com.taobao.android.newtrade",
+          "action": "",
+          "type": "bundleInterface",
+          "func": "addBag",
+          "needTimeout": "false"
+        },
+        "targetPlatforms": [
+          "native",
+          "weex",
+          "windvane"
+        ],
+        "params": [
+          {
+            "name": "requestId",
+            "type": "java.lang.String"
+          },
+          {
+            "name": "itemId",
+            "type": "java.lang.String"
+          },
+          {
+            "name": "quantity",
+            "type": "java.lang.Integer"
+          },
+          {
+            "name": "skuId",
+            "type": "java.lang.String"
+          },
+          {
+            "name": "exParams",
+            "type": "java.lang.String"
+          },
+          {
+            "name": "cartFrom",
+            "type": "java.lang.String"
+          },
+          {
+            "name": "showSKU",
+            "type": "java.lang.Boolean"
+          },
+          {
+            "name": "clientExParams",
+            "type": "java.util.Map"
+          },
+          {
+            "name": "context",
+            "type": "android.content.Context"
+          }
+        ],
+        "result": [
+          {
+            "name": "msg",
+            "type": "java.lang.String"
+          },
+          {
+            "name": "resultCode",
+            "type": "java.lang.String"
+          }
+        ]
+      }
+    ]
+  }
+]

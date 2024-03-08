@@ -1,0 +1,12 @@
+[
+  {
+    "name": "直接发",
+    "icon": "",
+    "params": {
+      "utParams": {
+        "exposeUTName": "QuickPublish"
+      }
+    },
+    "pluginClass": "LCVideoEditQuickPublishPlugin"
+  }
+]

@@ -1,0 +1,119 @@
+[
+  {
+    "bizName": "msoa.taobao.favorite",
+    "services": [
+      {
+        "serviceId": "msoa.taobao.favorite.isFavoriteItem",
+        "version": "1.0",
+        "provider": {
+          "className": "com.taobao.favorites.service.FavGoodService",
+          "action": "com.taobao.favorite.good.service",
+          "type": "bindService",
+          "func": "isFavoriteItem"
+        },
+        "params": [
+          {
+            "name": "requestId",
+            "type": "java.lang.String"
+          },
+          {
+            "name": "itemId",
+            "type": "java.lang.String"
+          }
+        ],
+        "result": [
+          {
+            "name": "isFavorite",
+            "type": "boolean"
+          }
+        ]
+      },
+      {
+        "serviceId": "msoa.taobao.favorite.addFavoriteItem",
+        "version": "1.0",
+        "provider": {
+          "className": "com.taobao.favorites.service.FavGoodService",
+          "action": "com.taobao.favorite.good.service",
+          "type": "bindService",
+          "func": "addFavoriteItem"
+        },
+        "params": [
+          {
+            "name": "requestId",
+            "type": "java.lang.String"
+          },
+          {
+            "name": "itemId",
+            "type": "java.lang.String"
+          }
+        ],
+        "result": [
+          {
+            "name": "addResult",
+            "type": "boolean"
+          }
+        ]
+      },
+      {
+        "serviceId": "msoa.taobao.favorite.deleteFavoriteItem",
+        "version": "1.0",
+        "provider": {
+          "className": "com.taobao.favorites.service.FavGoodService",
+          "action": "com.taobao.favorite.good.service",
+          "type": "bindService",
+          "func": "deleteFavoriteItem"
+        },
+        "params": [
+          {
+            "name": "requestId",
+            "type": "java.lang.String"
+          },
+          {
+            "name": "itemId",
+            "type": "java.lang.String"
+          }
+        ],
+        "result": [
+          {
+            "name": "deleteResult",
+            "type": "boolean"
+          }
+        ]
+      },
+      {
+        "serviceId": "msoa.taobao.favorite.showCategoryList",
+        "version": "1.0",
+        "provider": {
+          "className": "com.taobao.favorites.service.FavGoodService",
+          "action": "com.taobao.favorite.good.service",
+          "type": "bindService",
+          "func": "showCategoryList"
+        },
+        "params": [
+          {
+            "name": "requestId",
+            "type": "java.lang.String"
+          },
+          {
+            "name": "itemId",
+            "type": "java.lang.String"
+          },
+          {
+            "name": "x",
+            "type": "int"
+          },
+          {
+            "name": "y",
+            "type": "int"
+          }
+        ],
+        "result": [
+          {
+            "name": "activityUrl",
+            "type": "java.lang.String"
+          }
+        ]
+      }
+    ]
+  }
+]

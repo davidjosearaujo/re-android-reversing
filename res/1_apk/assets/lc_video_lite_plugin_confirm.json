@@ -1,0 +1,11 @@
+[
+  {
+    "name": "去发布",
+    "icon": "",
+    "params": {
+      "utParams": {
+      }
+    },
+    "pluginClass": "LCVideoEditPreViewPublishPlugin"
+  }
+]
