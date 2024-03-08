@@ -24,9 +24,11 @@ From these files, we first look at the _manifest.json_ file, this gives us a few
 ![manifest.json](./docs/imgs/Screenshot%20from%202024-03-05%2000-46-20.png)
 
 [TBD]
-- [] Apktool to open XAPK
-- [] Check permissions on _manifest.xml_
-- [] JADX deofuscated
+1. Apktool to open XAPK
+2. Check permissions on _manifest.xml_
+3. JADX deofuscated
+3. run `apktool d -r -s com.tragisoap.fileandpdfmanager.apk`
+4. run `jadx -d out classes.dex`
 
 # PDF Reader Structure
 [TBD]

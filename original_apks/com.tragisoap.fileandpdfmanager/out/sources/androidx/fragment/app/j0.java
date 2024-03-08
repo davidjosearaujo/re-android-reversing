@@ -1,0 +1,34 @@
+package androidx.fragment.app;
+
+import android.transition.Transition;
+/* loaded from: /home/remnux/original_apks/com.tragisoap.fileandpdfmanager/classes.dex */
+public final class j0 implements Transition.TransitionListener {
+
+    /* renamed from: a  reason: collision with root package name */
+    public final /* synthetic */ Runnable f1666a;
+
+    public j0(Runnable runnable) {
+        this.f1666a = runnable;
+    }
+
+    @Override // android.transition.Transition.TransitionListener
+    public final void onTransitionCancel(Transition transition) {
+    }
+
+    @Override // android.transition.Transition.TransitionListener
+    public final void onTransitionEnd(Transition transition) {
+        this.f1666a.run();
+    }
+
+    @Override // android.transition.Transition.TransitionListener
+    public final void onTransitionPause(Transition transition) {
+    }
+
+    @Override // android.transition.Transition.TransitionListener
+    public final void onTransitionResume(Transition transition) {
+    }
+
+    @Override // android.transition.Transition.TransitionListener
+    public final void onTransitionStart(Transition transition) {
+    }
+}

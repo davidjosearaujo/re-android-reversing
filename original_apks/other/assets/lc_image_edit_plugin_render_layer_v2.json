@@ -1,0 +1,39 @@
+[
+  {
+    "name": "主渲染层",
+    "icon": "",
+    "params": {
+      "maxSize": 1920
+    },
+    "pluginClass": "LCPreviewLayerMainV2"
+  },
+  {
+    "name": "圆角遮罩层",
+    "icon": "",
+    "params": {
+      "maxSize": 1920
+    },
+    "pluginClass": "LCPreviewLayerRoundRect"
+  },
+  {
+    "name": "删除层",
+    "icon": "",
+    "params": {
+    },
+    "pluginClass": "LCPreviewLayerDelete"
+  },
+  {
+    "name": "贴纸预览",
+    "icon": "",
+    "params": {
+    },
+    "pluginClass": "LCPreviewLayerStickerV2"
+  },
+  {
+    "name": "标签预览",
+    "icon": "",
+    "params": {
+    },
+    "pluginClass": "LCPreviewLayerLabel"
+  }
+]
