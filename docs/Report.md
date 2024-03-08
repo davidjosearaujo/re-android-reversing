@@ -50,6 +50,8 @@ Indeed, if we try to unzip the file, we are able to retrieve multiple files.
 
 We now have a large set of files from the application, however, many of then are not relevant for what we are trying to achieve and can blur our view over the whole of the application.
 
+
+
 ## Exploring readable files
 
 Going through the _1.apk_ files, we encountered a package named "juw.khdqwmf.xftkgphgq.fhyu" containing Chinese characters. After translating these strings using Google Translate, we determined that these characters formed simple Chinese sentences unrelated to the application's purpose. Further exploration revealed that **these strings were translated into package names when passed through a function**. This indicates that the original authors chose to obscure package names using Chinese strings.
