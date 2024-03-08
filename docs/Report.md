@@ -48,19 +48,27 @@ Indeed, if we try to unzip the file, we are able to retrieve multiple files.
 
 ## Decompiling
 
-We now have a large set of files from the application, however, many of then are not relevant for what we are trying to achieve and can blur our view over the whole of the application.
+We now have a large set of files from the application, however, many of then are not relevant for what we are trying to achieve and can blur our view over the whole of the application. 
 
+From all of the APKs found, e first focus on the _com.tragisoap.fileandpdfmanager.apk_ has it probably is the main application, and if anything malicious is to happen, it should first come from here.
 
+Using `apktool`, we can expose the the inner contents of the bundle. To do this we can use the following command:
+
+```bash
+apktool d -r -s com.tragisoap.fileandpdfmanager.apk
+```
+
+From this, the most important file is the _classes.dex_ file, from which we can reassemble the Java class files. To do this we can use `jadx` with the command:
+
+```bash
+jadx -d out classes.dex
+```
 
 ## Exploring readable files
 
+TODO
+1. muchaspuchas maybe a CSV type file
+2. Based on 1., we look for split functions.
+
+
 Going through the _1.apk_ files, we encountered a package named "juw.khdqwmf.xftkgphgq.fhyu" containing Chinese characters. After translating these strings using Google Translate, we determined that these characters formed simple Chinese sentences unrelated to the application's purpose. Further exploration revealed that **these strings were translated into package names when passed through a function**. This indicates that the original authors chose to obscure package names using Chinese strings.
-
-(TODO)
-
-## Decompiling
- 
-(TODO)
-
-3. run `apktool d -r -s com.tragisoap.fileandpdfmanager.apk`
-4. run `jadx -d out classes.dex`
