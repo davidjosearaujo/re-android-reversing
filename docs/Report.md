@@ -65,6 +65,7 @@ jadx -d out classes.dex
 ```
 
 ## Walkthrough
+
 ### Exploring Application External Accesses
 
 Given that the application contains malware, it's probable that at some point it downloads additional files from external services. We decided to search the codebase for URLs in the 'https://' format. And we found the following Java function.
@@ -119,6 +120,14 @@ At the time this report is being written, the server is accessible, but the reso
 But we have access to these files as they were previously downloaded, so it's possible to continue our analysis.
 
 ### Exploring 'muchaspuchas' and 'cortina' files
+
+'muchaspuchas' file is composed of what seems to be Java method or class names separated by the | character. The function where this file is being downloaded splits the file contents by the | character.
+
+```
+dalvik.system.InMemoryDexClassLoader|getClassLoader|loadClass|com.travisscott.pdf.MainLibrary|...
+```
+
+Given that information, we may assume that Java code is parsing these names and then calling them through reflection.
 
 ## Exploring readable files
 
