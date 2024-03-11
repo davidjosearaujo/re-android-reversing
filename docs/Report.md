@@ -66,11 +66,13 @@ jadx -d out classes.dex
 
 ## Walkthrough
 
+TODO: Finding initial point of application and trace it back to download of malware
+
 ### Exploring Application External Accesses
 
 Given that the application contains malware, it's probable that at some point it downloads additional files from external services. We decided to search the codebase for URLs in the 'https://' format. And we found the following Java function.
 
-```
+```java
     public static void a() {
         String str;
         y4.p pVar = new y4.p();
@@ -102,7 +104,7 @@ Given that the application contains malware, it's probable that at some point it
     }
 ```
 
-Although it's obfuscated, we can see that it's accessing files from the domain befukiv.com. A DNS search reveals that this domain has two name servers pointing to domains in Russia.
+Although it's obfuscated, we can see that it's accessing files from the domain **befukiv.com**. A DNS search reveals that this domain has two name servers pointing to domains in Russia.
 
 ```
 ...
@@ -121,7 +123,7 @@ But we have access to these files as they were previously downloaded, so it's po
 
 ### Exploring 'muchaspuchas' and 'cortina' files
 
-'muchaspuchas' file is composed of what seems to be Java method or class names separated by the | character. The function where this file is being downloaded splits the file contents by the | character.
+The 'muchaspuchas' file is composed of what seems to be Java method or class names separated by the | character. The function where this file is being downloaded splits the file contents by the | character.
 
 ```
 dalvik.system.InMemoryDexClassLoader|getClassLoader|loadClass|com.travisscott.pdf.MainLibrary|...
