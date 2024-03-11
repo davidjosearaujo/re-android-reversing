@@ -135,7 +135,7 @@ Given that information, we may assume that Java code is parsing these names and 
 
 We can see that inside function a() (obfuscated) a string is being splitted by '|' character. To make it more clear we did some deofuscation and achieved the following result
 
-```
+```java
 public static void fetchFilesAndProcess() {
         String str;
         Session session = new Session();
