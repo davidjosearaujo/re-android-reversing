@@ -1,0 +1,183 @@
+{
+  "projectVersion": 1,
+  "files": [
+    "com.tragisoap.fileandpdfmanager"
+  ],
+  "treeExpansions": [],
+  "codeData": {
+    "comments": [],
+    "renames": [
+      {
+        "nodeRef": {
+          "refType": "CLASS",
+          "declClass": "g6.i"
+        },
+        "newName": "WriterFile"
+      },
+      {
+        "nodeRef": {
+          "refType": "CLASS",
+          "declClass": "y4.d"
+        },
+        "newName": "setupTls"
+      },
+      {
+        "nodeRef": {
+          "refType": "CLASS",
+          "declClass": "y4.o"
+        },
+        "newName": "TwoStrings"
+      },
+      {
+        "nodeRef": {
+          "refType": "CLASS",
+          "declClass": "y4.p"
+        },
+        "newName": "Session"
+      },
+      {
+        "nodeRef": {
+          "refType": "CLASS",
+          "declClass": "y4.r"
+        },
+        "newName": "HttpHandler"
+      },
+      {
+        "nodeRef": {
+          "refType": "CLASS",
+          "declClass": "y4.r$a"
+        },
+        "newName": "getRequest"
+      },
+      {
+        "nodeRef": {
+          "refType": "CLASS",
+          "declClass": "y4.t"
+        },
+        "newName": "ParseHttpResponseBody"
+      },
+      {
+        "nodeRef": {
+          "refType": "FIELD",
+          "declClass": "e5.m",
+          "shortId": "g:Ljava/util/concurrent/atomic/AtomicReference;"
+        },
+        "newName": "muchasStrings"
+      },
+      {
+        "nodeRef": {
+          "refType": "FIELD",
+          "declClass": "e5.m",
+          "shortId": "h:Lg6/i;"
+        },
+        "newName": "fw"
+      },
+      {
+        "nodeRef": {
+          "refType": "FIELD",
+          "declClass": "e5.m",
+          "shortId": "i:Ljava/util/concurrent/atomic/AtomicBoolean;"
+        },
+        "newName": "fetchAndProcessCompleted"
+      },
+      {
+        "nodeRef": {
+          "refType": "FIELD",
+          "declClass": "y4.o",
+          "shortId": "b:Ljava/lang/String;"
+        },
+        "newName": "secondStr"
+      },
+      {
+        "nodeRef": {
+          "refType": "FIELD",
+          "declClass": "y4.s",
+          "shortId": "g:Ly4/t;"
+        },
+        "newName": "responseBody"
+      },
+      {
+        "nodeRef": {
+          "refType": "FIELD",
+          "declClass": "z4.h",
+          "shortId": "c:Ljava/nio/charset/Charset;"
+        },
+        "newName": "utf8Charset"
+      },
+      {
+        "nodeRef": {
+          "refType": "METHOD",
+          "declClass": "g6.i",
+          "shortId": "h([B)V"
+        },
+        "newName": "mapMuchasPuchasToMethods"
+      },
+      {
+        "nodeRef": {
+          "refType": "METHOD",
+          "declClass": "y4.d",
+          "shortId": "a()Ly4/s;"
+        },
+        "newName": "Execute"
+      },
+      {
+        "nodeRef": {
+          "refType": "METHOD",
+          "declClass": "y4.r$a",
+          "shortId": "a()Ly4/r;"
+        },
+        "newName": "call"
+      },
+      {
+        "nodeRef": {
+          "refType": "METHOD",
+          "declClass": "y4.r$a",
+          "shortId": "c(Ljava/lang/String;)V"
+        },
+        "newName": "request"
+      },
+      {
+        "nodeRef": {
+          "refType": "METHOD",
+          "declClass": "y4.t",
+          "shortId": "b()[B"
+        },
+        "newName": "parse"
+      },
+      {
+        "nodeRef": {
+          "refType": "METHOD",
+          "declClass": "y4.t",
+          "shortId": "e()Ly4/o;"
+        },
+        "newName": "getTwoStrings"
+      }
+    ]
+  },
+  "openTabs": [
+    {
+      "type": "class",
+      "tabPath": "e5.m",
+      "subPath": "java",
+      "caret": 2299,
+      "view": {
+        "x": 0,
+        "y": 386
+      }
+    },
+    {
+      "type": "class",
+      "tabPath": "y4.r",
+      "subPath": "java",
+      "caret": 220,
+      "view": {
+        "x": 0,
+        "y": 0
+      }
+    }
+  ],
+  "activeTab": 0,
+  "cacheDir": "com.tragisoap.fileandpdfmanager.cache",
+  "enableLiveReload": false,
+  "searchHistory": []
+}
