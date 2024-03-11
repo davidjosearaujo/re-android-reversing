@@ -3,10 +3,33 @@
   "files": [
     "com.tragisoap.fileandpdfmanager"
   ],
-  "treeExpansions": [],
+  "treeExpansions": [
+    [
+      "Source code",
+      "com.tragisoap.fileandpdfmanager"
+    ],
+    [
+      "com",
+      "Source code",
+      "com.tragisoap.fileandpdfmanager"
+    ],
+    [
+      "tragisoap.fileandpdfmanager",
+      "com",
+      "Source code",
+      "com.tragisoap.fileandpdfmanager"
+    ]
+  ],
   "codeData": {
     "comments": [],
     "renames": [
+      {
+        "nodeRef": {
+          "refType": "CLASS",
+          "declClass": "e5.m"
+        },
+        "newName": "Malicious"
+      },
       {
         "nodeRef": {
           "refType": "CLASS",
