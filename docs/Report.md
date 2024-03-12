@@ -20,7 +20,7 @@ For our reverse engineering course, we have decided to analyze and reverse engin
 ## Environment
 To explore this application, we first focused on using a **secure environment** where we could ensure that the finding **wouldn't harm** the host system, and prevent the **system from tainting** any of the possible findings.
 
-We used Vagrant to setup a [Kali box](https://app.vagrantup.com/kalilinux/boxes/rolling) where we could import the provided raw files for evaluation. Also [REMnux Docker container](https://docs.remnux.org/install-distro/remnux-as-a-container) was used for further forensic exploration.
+We used Vagrant to set up a [Kali box](https://app.vagrantup.com/kalilinux/boxes/rolling) where we could import the provided raw files for evaluation. Also [REMnux Docker container](https://docs.remnux.org/install-distro/remnux-as-a-container) was used for further forensic exploration.
 
 ## Tools
 
@@ -30,29 +30,29 @@ We used Vagrant to setup a [Kali box](https://app.vagrantup.com/kalilinux/boxes/
 
 ## Unpack
 
-Unziping the file with `7za PDF_Reader_File_Manager.zip` results in the files and directory shown bellow.
+Unziping the file with `7za PDF_Reader_File_Manager.zip` results in the files and directory shown below.
 
 ![From the zip archive](./imgs/Screenshot%20from%202024-03-08%2017-30-10.png)
 
-With a little investigation we can discover that XAPK files are just a bundle of an APKs with other files. To retrieve these we can again use `7za` and run it with the XAPK file. E now have multiple APKs, a PNG and a JSON file.
+With a little investigation, we can discover that XAPK files are just a bundle of APKs with other files. To retrieve these we can again use `7za` and run it with the XAPK file. E now have multiple APKs, a PNG and a JSON file.
 
 ![Extracted files](./imgs/Screenshot%20from%202024-03-05%2000-41-49.png)
 
-When trying to run `apktool d 1.apk` or `jadx -d out 1.apk`, we are confronted with some error. This does not happen with any other APK, so inspecting the file signatures, e can find out that **1.apk is not actually an APK** file.
+When trying to run `apktool d 1.apk` or `jadx -d out 1.apk`, we are confronted with some error. This does not happen with any other APK, so inspecting the file signatures, we can find that **1.apk is not a clean APK** file.
 
 ![APK files signatures](./imgs/Screenshot%20from%202024-03-08%2017-40-55.png)
 
-Indeed, if we try to unzip the file, we are able to retrieve multiple files.
+Indeed, if we try to unzip the file, we can retrieve multiple files.
 
 ![Inside the 1.apk](./imgs/Screenshot%20from%202024-03-08%2017-45-52.png)
 
 ## Decompiling
 
-We now have a large set of files from the application, however, many of then are not relevant for what we are trying to achieve and can blur our view over the whole of the application. 
+We now have a large set of files from the application, however, many of them are not relevant to what we are trying to achieve and can blur our view over the whole of the application. 
 
-From all of the APKs found, e first focus on the _com.tragisoap.fileandpdfmanager.apk_ has it probably is the main application, and if anything malicious is to happen, it should first come from here.
+From all of the APKs found, the first focus on the _com.tragisoap.fileandpdfmanager.apk_ has it probably is the main application, and if anything malicious is to happen, it should first come from here.
 
-Using `apktool`, we can expose the the inner contents of the bundle. To do this we can use the following command:
+Using `apktool`, we can expose the inner contents of the bundle. To do this we can use the following command:
 
 ```bash
 apktool d -r -s com.tragisoap.fileandpdfmanager.apk
@@ -66,7 +66,7 @@ jadx -d out classes.dex
 
 ## Walkthrough
 
-The main application file are present ant **com.tragisoap.fileandpdfmanager**, so it makes sense to start from here our search. Most of the files appear harmless, but when coming across the class _PartPreviewActivity_, we can notice some strange pattern in the code.
+The main application files are present at **com.tragisoap.fileandpdfmanager**, so it makes sense to start from here our search. Most of the files appear harmless, but when coming across the class _PartPreviewActivity_, we can notice some strange patterns in the code.
 
 ```java
 public final void onCreate(Bundle bundle) {
@@ -100,7 +100,7 @@ public final void onCreate(Bundle bundle) {
 }
 ```
 
-It is not that common for an application to successively try and expect the same exception in such a short time, and this may suggest that the developer expects some kind of resistance from the system. The most concerning section however is present on the _onNewIntent_ method of the same class, were we find that the application request information of the system regarding it's **package installation permissions** as a condition for an action.
+It is not that common for an application to successively try and expect the same exception in such a short time, and this may suggest that the developer expects some kind of resistance from the system. The most concerning section however is present on the _onNewIntent_ method of the same class, where we find that the application requests information of the system regarding its **package installation permissions** as a condition for an action.
 
 ```java
 public final void onNewIntent(Intent intent) {
@@ -179,7 +179,7 @@ Given that information, we may assume that Java code is parsing these names and 
 
 ## Exploring readable files
 
-We can see that inside function a() (obfuscated) a string is being splitted by '|' character. To make it more clear we did some deofuscation and achieved the following result
+We can see that inside function a() (obfuscated) a string is being split by the '|' character. To make it more clear we performed deofuscation and achieved the following result
 
 ```java
 public static void fetchFilesAndProcess() {
@@ -214,7 +214,7 @@ public static void fetchFilesAndProcess() {
 ```
 
 As we can see, the function is fetching the files and is then it maps 'muchaspuchas' strings into application methods.
-This shows that authors wanted to obfuscate application method calls with reflection.
+This shows that the authors wanted to obfuscate application method calls with reflection.
 
 
 TODO
