@@ -33,4 +33,8 @@ google-services.json
 *.hprof
 *.vagrant
 *.obsidian
+<<<<<<< HEAD
 original_zip/.bash_history
+=======
+*.cache
+>>>>>>> 74e214344abf34ea8e3dbe8d77494db8d9e8b3bc
