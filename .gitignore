@@ -33,3 +33,4 @@ google-services.json
 *.hprof
 *.vagrant
 *.obsidian
+original_zip/.bash_history
