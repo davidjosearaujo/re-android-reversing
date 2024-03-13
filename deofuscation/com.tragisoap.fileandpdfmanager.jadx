@@ -18,6 +18,11 @@
       "com",
       "Source code",
       "com.tragisoap.fileandpdfmanager"
+    ],
+    [
+      "e5",
+      "Source code",
+      "com.tragisoap.fileandpdfmanager"
     ]
   ],
   "codeData": {
@@ -167,6 +172,14 @@
       {
         "nodeRef": {
           "refType": "FIELD",
+          "declClass": "g6.i",
+          "shortId": "f:I"
+        },
+        "newName": "writeMode"
+      },
+      {
+        "nodeRef": {
+          "refType": "FIELD",
           "declClass": "y4.o",
           "shortId": "b:Ljava/lang/String;"
         },
@@ -192,9 +205,41 @@
         "nodeRef": {
           "refType": "METHOD",
           "declClass": "g6.i",
+          "shortId": "a()V"
+        },
+        "newName": "doNothing"
+      },
+      {
+        "nodeRef": {
+          "refType": "METHOD",
+          "declClass": "g6.i",
+          "shortId": "b()I"
+        },
+        "newName": "getWriteMode"
+      },
+      {
+        "nodeRef": {
+          "refType": "METHOD",
+          "declClass": "g6.i",
+          "shortId": "c(Ljava/lang/Object;Ljava/io/File;Lp2/h;)Z"
+        },
+        "newName": "writeObjectToFile"
+      },
+      {
+        "nodeRef": {
+          "refType": "METHOD",
+          "declClass": "g6.i",
           "shortId": "e(Ljava/lang/String;)Ljava/lang/Object;"
         },
         "newName": "getClassInstanceByMethodName"
+      },
+      {
+        "nodeRef": {
+          "refType": "METHOD",
+          "declClass": "g6.i",
+          "shortId": "f(FFLk4/l;)V"
+        },
+        "newName": "throwNullException"
       },
       {
         "nodeRef": {
@@ -235,6 +280,14 @@
           "shortId": "h([B)V"
         },
         "newName": "mapMuchasPuchasToMethods"
+      },
+      {
+        "nodeRef": {
+          "refType": "METHOD",
+          "declClass": "k3.a",
+          "shortId": "d(Ljava/nio/ByteBuffer;Ljava/io/File;)V"
+        },
+        "newName": "writeBytesToFile"
       },
       {
         "nodeRef": {

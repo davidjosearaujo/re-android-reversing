@@ -232,7 +232,11 @@ This shows that the authors maybe wanted to obfuscate application method calls w
 
 From that, we can see that the function is using java reflection to dynamically assign variables of Malicious class based on methods/classes names obtained from muchaspuchas file.
 
+`mapMuchasStringsToMethods` receives as an argument a byte array containing data from `cortina` file. It seems that it's loading a class based on the binary file. Based on that we decided to analyze as a next step, to analyze cortina file.
 
+
+### Exploring cortina file
+[TODO]...
 
 
 
@@ -240,6 +244,9 @@ TODO
 1. muchaspuchas maybe a CSV type file
 2. Based on 1., we look for split functions.
 3. Explore 'mapMuchasPuchasToMethods' line 2 (Class cls = (Class) inMemory...)
+
+
+
 
 
 Going through the _1.apk_ files, we encountered a package named "juw.khdqwmf.xftkgphgq.fhyu" containing Chinese characters. After translating these strings using Google Translate, we determined that these characters formed simple Chinese sentences unrelated to the application's purpose. Further exploration revealed that **these strings were translated into package names when passed through a function**. This indicates that the original authors chose to obscure package names using Chinese strings.
