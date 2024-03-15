@@ -90,6 +90,14 @@
       {
         "nodeRef": {
           "refType": "METHOD",
+          "declClass": "e5.m",
+          "shortId": "a()V"
+        },
+        "newName": "fetchFilesAndProcess"
+      },
+      {
+        "nodeRef": {
+          "refType": "METHOD",
           "declClass": "g6.i",
           "shortId": "e(Ljava/lang/String;)Ljava/lang/Object;"
         },
@@ -129,9 +137,52 @@
       }
     ]
   },
-  "openTabs": [],
-  "activeTab": -1,
+  "openTabs": [
+    {
+      "type": "class",
+      "tabPath": "com.tragisoap.fileandpdfmanager.PartPreviewActivity",
+      "subPath": "java",
+      "caret": 340,
+      "view": {
+        "x": 0,
+        "y": 153
+      }
+    },
+    {
+      "type": "class",
+      "tabPath": "com.tragisoap.fileandpdfmanager.PreviewActivity",
+      "subPath": "java",
+      "caret": 673,
+      "view": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "type": "class",
+      "tabPath": "com.tragisoap.fileandpdfmanager.FileManagerService",
+      "subPath": "java",
+      "caret": 425,
+      "view": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "type": "class",
+      "tabPath": "e5.m",
+      "subPath": "java",
+      "caret": 631,
+      "view": {
+        "x": 0,
+        "y": 256
+      }
+    }
+  ],
+  "activeTab": 3,
   "cacheDir": "../original_apks/com.tragisoap.fileandpdfmanager.apk.cache",
   "enableLiveReload": false,
-  "searchHistory": []
+  "searchHistory": [
+    "268435456"
+  ]
 }
