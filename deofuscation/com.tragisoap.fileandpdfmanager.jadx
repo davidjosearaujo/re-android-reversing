@@ -99,6 +99,14 @@
         "nodeRef": {
           "refType": "METHOD",
           "declClass": "g6.i",
+          "shortId": "g(Ljava/lang/Class;Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;"
+        },
+        "newName": "stringsToMethods"
+      },
+      {
+        "nodeRef": {
+          "refType": "METHOD",
+          "declClass": "g6.i",
           "shortId": "h([B)V"
         },
         "codeRef": {
