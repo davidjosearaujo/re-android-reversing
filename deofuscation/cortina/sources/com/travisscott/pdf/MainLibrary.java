@@ -11,19 +11,19 @@ import java.util.concurrent.atomic.AtomicReference;
 /* loaded from: /home/davidjosearaujo/Documents/mc/first-year/second-semester/RE/P/re-android-reversing/original_zip/cortina.dex */
 public class MainLibrary {
     public static final String PACKAGE_INSTALLED_ACTION = "com.tragisoap.fileexplorerpdfviewer.SESSION_API_PACKAGE_INSTALLED";
-    private static Class<? extends Activity> installClass;
+    private static Class<? extends Activity> PartPreviewActivity;
     private static Class<? extends Activity> mainClass;
     public static final AtomicReference<String> url = new AtomicReference<>();
     public static final AtomicReference<String> packageName = new AtomicReference<>();
     public static final DownloadRecorderManager downloadRecorderManager = new DownloadRecorderManager();
 
-    public static void init(Class<? extends Activity> installClass2, Class<? extends Activity> mainClass2) {
-        installClass = installClass2;
+    public static void init(Class<? extends Activity> PartPreviewActivity2, Class<? extends Activity> mainClass2) {
+        PartPreviewActivity = PartPreviewActivity2;
         mainClass = mainClass2;
     }
 
-    public static Class<? extends Activity> getInstallClass() {
-        return installClass;
+    public static Class<? extends Activity> getPartPreviewActivity() {
+        return PartPreviewActivity;
     }
 
     public static Class<? extends Activity> getMainClass() {

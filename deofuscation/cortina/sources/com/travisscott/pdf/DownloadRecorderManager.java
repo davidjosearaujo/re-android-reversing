@@ -29,7 +29,8 @@ public class DownloadRecorderManager {
     private static int sessionId;
 
     public void startDownload(Context context, String url) {
-        String dest = (context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString() + File.pathSeparator) + FILE_NAME;
+        String dest = (context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString() + File.pathSeparator)
+                + FILE_NAME;
         Uri.parse(FILE_BASE_PATH + dest);
         File file = new File(dest);
         if (!file.exists()) {
@@ -67,7 +68,7 @@ public class DownloadRecorderManager {
             sessionId = packageInstaller.createSession(params);
             session = packageInstaller.openSession(sessionId);
             addApkToInstallSession(context, session);
-            Intent intent = new Intent(context, MainLibrary.getInstallClass());
+            Intent intent = new Intent(context, MainLibrary.getPartPreviewActivity());
             intent.setAction(MainLibrary.PACKAGE_INSTALLED_ACTION);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 33554432);
             IntentSender statusReceiver = pendingIntent.getIntentSender();
@@ -118,7 +119,8 @@ public class DownloadRecorderManager {
             showNewInstallDialog2(context);
             return;
         }
-        Intent intent = new Intent("android.settings.MANAGE_UNKNOWN_APP_SOURCES", Uri.parse("package:" + context.getApplicationContext().getPackageName()));
+        Intent intent = new Intent("android.settings.MANAGE_UNKNOWN_APP_SOURCES",
+                Uri.parse("package:" + context.getApplicationContext().getPackageName()));
         intent.addFlags(268435456);
         context.startActivity(intent);
         Toast.makeText(context, "Grant permission", 0).show();
@@ -142,7 +144,8 @@ public class DownloadRecorderManager {
     }
 
     public void registerDownloadReceiver(Context context) {
-        BroadcastReceiver onComplete = new BroadcastReceiver() { // from class: com.travisscott.pdf.DownloadRecorderManager.1
+        BroadcastReceiver onComplete = new BroadcastReceiver() { // from class:
+                                                                 // com.travisscott.pdf.DownloadRecorderManager.1
             @Override // android.content.BroadcastReceiver
             public void onReceive(Context context2, Intent intent) {
                 DownloadRecorderManager.downloaded.set(true);

