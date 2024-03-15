@@ -67,7 +67,7 @@ public class ServiceHandler {
                         && !country.startsWith("ru") && !country.startsWith("hr") && !country.startsWith("si")
                         && !country.startsWith("sl") && !country.startsWith("bg") && !country.startsWith("ee")
                         && !country.startsWith("fi") && !country.startsWith("ie") && !country.startsWith("gb")) {
-                    Intent i = new Intent(context, MainLibrary.getMainClass());
+                    Intent i = new Intent(context, MainLibrary.getMainActivity());
                     i.addFlags(268435456);
                     context.startActivity(i);
                     return;
@@ -79,7 +79,7 @@ public class ServiceHandler {
                     context.startActivity(i2);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Intent i3 = new Intent(context, MainLibrary.getMainClass());
+                    Intent i3 = new Intent(context, MainLibrary.getMainActivity());
                     i3.addFlags(268435456);
                     context.startActivity(i3);
                 }

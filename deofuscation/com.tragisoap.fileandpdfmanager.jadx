@@ -3,10 +3,123 @@
   "files": [
     "../original_apks/com.tragisoap.fileandpdfmanager.apk"
   ],
-  "treeExpansions": [],
+  "treeExpansions": [
+    [
+      "com",
+      "Source code",
+      "com.tragisoap.fileandpdfmanager.apk"
+    ],
+    [
+      "tragisoap.fileandpdfmanager",
+      "com",
+      "Source code",
+      "com.tragisoap.fileandpdfmanager.apk"
+    ],
+    [
+      "e5",
+      "Source code",
+      "com.tragisoap.fileandpdfmanager.apk"
+    ]
+  ],
   "codeData": {
     "comments": [],
-    "renames": []
+    "renames": [
+      {
+        "nodeRef": {
+          "refType": "CLASS",
+          "declClass": "e5.m"
+        },
+        "newName": "Malicious"
+      },
+      {
+        "nodeRef": {
+          "refType": "FIELD",
+          "declClass": "e5.m",
+          "shortId": "a:Ljava/lang/reflect/Method;"
+        },
+        "newName": "readPdfFile"
+      },
+      {
+        "nodeRef": {
+          "refType": "FIELD",
+          "declClass": "e5.m",
+          "shortId": "b:Ljava/lang/reflect/Method;"
+        },
+        "newName": "getFirstText"
+      },
+      {
+        "nodeRef": {
+          "refType": "FIELD",
+          "declClass": "e5.m",
+          "shortId": "c:Ljava/lang/reflect/Method;"
+        },
+        "newName": "getSecondText"
+      },
+      {
+        "nodeRef": {
+          "refType": "FIELD",
+          "declClass": "e5.m",
+          "shortId": "d:Ljava/lang/reflect/Method;"
+        },
+        "newName": "launch"
+      },
+      {
+        "nodeRef": {
+          "refType": "FIELD",
+          "declClass": "e5.m",
+          "shortId": "e:Ljava/lang/reflect/Method;"
+        },
+        "newName": "makePdfPage"
+      },
+      {
+        "nodeRef": {
+          "refType": "FIELD",
+          "declClass": "e5.m",
+          "shortId": "f:Ljava/lang/reflect/Method;"
+        },
+        "newName": "getName"
+      },
+      {
+        "nodeRef": {
+          "refType": "FIELD",
+          "declClass": "e5.m",
+          "shortId": "g:Ljava/util/concurrent/atomic/AtomicReference;"
+        },
+        "newName": "muchasStrings"
+      },
+      {
+        "nodeRef": {
+          "refType": "METHOD",
+          "declClass": "g6.i",
+          "shortId": "e(Ljava/lang/String;)Ljava/lang/Object;"
+        },
+        "newName": "getClassInstanceByMethodName"
+      },
+      {
+        "nodeRef": {
+          "refType": "METHOD",
+          "declClass": "g6.i",
+          "shortId": "h([B)V"
+        },
+        "codeRef": {
+          "attachType": "VAR",
+          "index": 5
+        },
+        "newName": "inMemoryDexClassLoader"
+      },
+      {
+        "nodeRef": {
+          "refType": "METHOD",
+          "declClass": "g6.i",
+          "shortId": "h([B)V"
+        },
+        "codeRef": {
+          "attachType": "VAR",
+          "index": 31
+        },
+        "newName": "init"
+      }
+    ]
   },
   "openTabs": [],
   "activeTab": -1,

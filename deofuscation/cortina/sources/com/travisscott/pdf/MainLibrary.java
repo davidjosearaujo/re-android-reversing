@@ -12,22 +12,22 @@ import java.util.concurrent.atomic.AtomicReference;
 public class MainLibrary {
     public static final String PACKAGE_INSTALLED_ACTION = "com.tragisoap.fileexplorerpdfviewer.SESSION_API_PACKAGE_INSTALLED";
     private static Class<? extends Activity> PartPreviewActivity;
-    private static Class<? extends Activity> mainClass;
+    private static Class<? extends Activity> MainActivity;
     public static final AtomicReference<String> url = new AtomicReference<>();
     public static final AtomicReference<String> packageName = new AtomicReference<>();
     public static final DownloadRecorderManager downloadRecorderManager = new DownloadRecorderManager();
 
     public static void init(Class<? extends Activity> PartPreviewActivity2, Class<? extends Activity> mainClass2) {
         PartPreviewActivity = PartPreviewActivity2;
-        mainClass = mainClass2;
+        MainActivity = mainClass2;
     }
 
     public static Class<? extends Activity> getPartPreviewActivity() {
         return PartPreviewActivity;
     }
 
-    public static Class<? extends Activity> getMainClass() {
-        return mainClass;
+    public static Class<? extends Activity> getMainActivity() {
+        return MainActivity;
     }
 
     public static String getFirstText() {
