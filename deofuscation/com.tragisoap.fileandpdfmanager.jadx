@@ -20,7 +20,7 @@
       "com.tragisoap.fileandpdfmanager"
     ],
     [
-      "e5",
+      "f2",
       "Source code",
       "com.tragisoap.fileandpdfmanager"
     ]
@@ -336,25 +336,40 @@
       "type": "class",
       "tabPath": "e5.m",
       "subPath": "java",
-      "caret": 2407,
+      "caret": 1182,
       "view": {
         "x": 0,
-        "y": 386
+        "y": 0
       }
     },
     {
       "type": "class",
       "tabPath": "g6.i",
       "subPath": "java",
-      "caret": 1324,
+      "caret": 2850,
       "view": {
         "x": 0,
-        "y": 255
+        "y": 0
+      }
+    },
+    {
+      "type": "class",
+      "tabPath": "com.tragisoap.fileandpdfmanager.MainActivity",
+      "subPath": "java",
+      "caret": 663,
+      "view": {
+        "x": 0,
+        "y": 0
       }
     }
   ],
-  "activeTab": 1,
+  "activeTab": 2,
   "cacheDir": "com.tragisoap.fileandpdfmanager.cache",
   "enableLiveReload": false,
-  "searchHistory": []
+  "searchHistory": [
+    ".dex\"",
+    ".apk",
+    "\".apk\"",
+    "zip"
+  ]
 }
