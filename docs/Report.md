@@ -66,20 +66,6 @@ jadx -d out classes.dex
 
 ## Walkthrough
 
-```mermaid
-flowchart TD
-    A([PreviewActivity]) --> B([FileManagerService])
-    F -- No --> C([Malicius.fetchFilesAndProcess])
-    C --> D([mapMuchasPuchasToMethods])
-    D --> E([travisscot.init])
-    E --> B
-    B --> F{travisscot initialized ?}
-    F -- Yes ---> G([travisscot.makePdfPage])
-    G --- H[set 1.apk url]
-    G --> I([PartPreviewActivity.onNewIntent])
-    I --> J([PartPreviewActivity.onCreate])
-```
-
 We commence our analysis in the _com.tragisoap.fileandpdfmanager.MainActivity_ class, as it serves as the application's starting point. From this class, we observe a few listeners for clicking, which is expected in a mobile application.
 
 To reconstruct the malicious flow, we turn our attention to the _PreviewActivity_ class, which retrieves a variable from _FileManagerService_ that appears to be a counter of some sort. I cannot trace its usage, assuming it is utilized at all, but we can delve into the class it originates from.
@@ -402,7 +388,24 @@ public static void getName(Context context) {
 }
 ```
 
-And even without the explicit link, from all that we have gathered up to this point, it is quite evident that the package installed with _1.apk_ is now being launched.
+And even without the explicit link, from all that we have gathered up to this point, it is quite evident that the package installed with _1.apk_ is now being launched, but before we cover that, this is a rough flowchart of all that as taken place until now.
+
+```mermaid
+flowchart TD
+    A([PreviewActivity]) --> B([FileManagerService])
+    F -- No --> C([Malicius.fetchFilesAndProcess])
+    C --> D([mapMuchasPuchasToMethods])
+    D --> E([travisscot.init])
+    E --> B
+    B --> F{travisscot initialized ?}
+    F -- Yes ---> G([travisscot.makePdfPage])
+    G --- H[set 1.apk url]
+    G --> I([PartPreviewActivity.onNewIntent])
+    I --> J([PartPreviewActivity.onCreate])
+    J --> K([travisscot.launch])
+    K --> L([1.apk download and install])
+    L --> M([1.apk launch])
+```
 
 ### Exploring '1.apk'
 
