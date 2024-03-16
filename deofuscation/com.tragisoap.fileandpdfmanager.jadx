@@ -147,22 +147,22 @@
   "openTabs": [
     {
       "type": "class",
-      "tabPath": "com.tragisoap.fileandpdfmanager.PreviewActivity",
+      "tabPath": "com.tragisoap.fileandpdfmanager.PartPreviewActivity",
       "subPath": "java",
-      "caret": 681,
+      "caret": 1964,
       "view": {
-        "x": 0,
-        "y": 0
+        "x": 2,
+        "y": 267
       }
     },
     {
       "type": "class",
-      "tabPath": "com.tragisoap.fileandpdfmanager.FileManagerService",
+      "tabPath": "com.google.android.material.datepicker.q",
       "subPath": "java",
-      "caret": 310,
+      "caret": 3500,
       "view": {
         "x": 0,
-        "y": 0
+        "y": 709
       }
     }
   ],
