@@ -19,6 +19,13 @@
       "e5",
       "Source code",
       "com.tragisoap.fileandpdfmanager.apk"
+    ],
+    [
+      "com.tragisoap.fileandpdfmanager.PartPreviewActivity",
+      "tragisoap.fileandpdfmanager",
+      "com",
+      "Source code",
+      "com.tragisoap.fileandpdfmanager.apk"
     ]
   ],
   "codeData": {
@@ -160,9 +167,11 @@
     }
   ],
   "activeTab": 0,
-  "cacheDir": "../original_apks/com.tragisoap.fileandpdfmanager.apk.cache",
+  "cacheDir": "com.tragisoap.fileandpdfmanager.apk.cache",
   "enableLiveReload": false,
   "searchHistory": [
+    ".invoke",
+    "readPDFfile",
     "268435456"
   ]
 }

