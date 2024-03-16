@@ -1,0 +1,126 @@
+{
+  "projectVersion": 1,
+  "files": [
+    "1_apk"
+  ],
+  "treeExpansions": [
+    [
+      "wfu.tjudfot.tetdyxomh.vrqdh",
+      "Source code",
+      "1_apk"
+    ],
+    [
+      "eeu.wuekite.ptluwwjmt.ypxjt",
+      "Source code",
+      "1_apk"
+    ],
+    [
+      "fdx.yyryjhh.loteljwpu.jrqme",
+      "Source code",
+      "1_apk"
+    ],
+    [
+      "fje.ymqnpel.dtdenfufv.pusey",
+      "Source code",
+      "1_apk"
+    ],
+    [
+      "iml.ompdvmx.uqixiejqr.eedej",
+      "Source code",
+      "1_apk"
+    ],
+    [
+      "juw.khdqwmf.xftkgphgq.fhyu",
+      "Source code",
+      "1_apk"
+    ],
+    [
+      "pht.dgrrsrp.hgdtgssvw",
+      "Source code",
+      "1_apk"
+    ],
+    [
+      "pls.hqmkfei.nxskrnoon.fwwsp",
+      "Source code",
+      "1_apk"
+    ],
+    [
+      "vie.dwhyiud.voxxndgyo.sooyh",
+      "Source code",
+      "1_apk"
+    ],
+    [
+      "vjj.xsflifo.puoiiqxxg.fwrsd",
+      "Source code",
+      "1_apk"
+    ],
+    [
+      "rjg.ugogehh.gxwrstviq.khhf",
+      "Source code",
+      "1_apk"
+    ]
+  ],
+  "codeData": {
+    "comments": [],
+    "renames": [
+      {
+        "nodeRef": {
+          "refType": "CLASS",
+          "declClass": "fdx.yyryjhh.loteljwpu.jrqme.vtgdtohgmlu"
+        },
+        "newName": "DeofuscatePackages"
+      },
+      {
+        "nodeRef": {
+          "refType": "CLASS",
+          "declClass": "pls.hqmkfei.nxskrnoon.fwwsp.rprujshngmry"
+        },
+        "newName": "ContextWrapper"
+      },
+      {
+        "nodeRef": {
+          "refType": "CLASS",
+          "declClass": "rjg.ugogehh.gxwrstviq.khhf.guwjfornolnug"
+        },
+        "newName": "DexDirHandler"
+      },
+      {
+        "nodeRef": {
+          "refType": "FIELD",
+          "declClass": "pls.hqmkfei.nxskrnoon.fwwsp.rprujshngmry",
+          "shortId": "fnjkjldn:Landroid/content/Context;"
+        },
+        "newName": "context"
+      },
+      {
+        "nodeRef": {
+          "refType": "METHOD",
+          "declClass": "fdx.yyryjhh.loteljwpu.jrqme.vtgdtohgmlu",
+          "shortId": "a(I)[C"
+        },
+        "newName": "obfuscatorTranslator"
+      },
+      {
+        "nodeRef": {
+          "refType": "METHOD",
+          "declClass": "fdx.yyryjhh.loteljwpu.jrqme.vtgdtohgmlu",
+          "shortId": "ofgpjppmlrfyke(Ljava/lang/String;I)Ljava/lang/String;"
+        },
+        "newName": "chineseStringToPackageName"
+      },
+      {
+        "nodeRef": {
+          "refType": "METHOD",
+          "declClass": "rjg.ugogehh.gxwrstviq.khhf.guwjfornolnug",
+          "shortId": "uppjkthuu(Landroid/content/Context;)Ljava/io/File;"
+        },
+        "newName": "getDexDir"
+      }
+    ]
+  },
+  "openTabs": [],
+  "activeTab": -1,
+  "cacheDir": "1_apk.cache",
+  "enableLiveReload": false,
+  "searchHistory": []
+}
