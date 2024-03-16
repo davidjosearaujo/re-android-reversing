@@ -48,7 +48,7 @@ Indeed, if we try to unzip the file, we can retrieve multiple files.
 
 ## Decompiling
 
-We now have a large set of files from the application, however, many of them are not relevant to what we are trying to achieve and can blur our view over the whole of the application. 
+We now have a large set of files from the application, however, many of them are not relevant to what we are trying to achieve and can blur our view over the whole of the application.
 
 From all of the APKs found, the first focus on the _com.tragisoap.fileandpdfmanager.apk_ has it probably is the main application, and if anything malicious is to happen, it should first come from here.
 
@@ -66,10 +66,23 @@ jadx -d out classes.dex
 
 ## Walkthrough
 
+```mermaid
+flowchart TD
+    A([PreviewActivity]) --> B([FileManagerService])
+    F -- No --> C([Malicius.fetchFilesAndProcess])
+    C --> D([mapMuchasPuchasToMethods])
+    D --> E([travisscot.init])
+    E --> B
+    B --> F{traviscot initialized ?}
+    F -- Yes ---> G([traviscot.makePdfPage])
+    G --- H[set 1.apk url]
+    G --> I([PartPreviewActivity.onNewIntent])
+    I --> J([PartPreviewActivity.onCreate])
+```
 
-TODO
-1. Add flowchart of the malicious process.
-2. Starts from _PreviewActiviy_ where it will call _FileMnanagerService_ which in turn will call _fetchFilesAndProces_
+We start our analysis in the _com.tragisoap.fileandpdfmanager.MainActivity_ class has it is the applications start point. From this class we can only see that there are a few listeners for clicking which is to be expected in a mobile application.
+
+We can reconstruct the malicious flow, starting from the _PreviewActivity_ class, which in turn gets a variable from _FileManagerService_ that appears to be a counter of some kind ... TO COMPLETE
 
 ```java
 public static void fetchFilesAndProcess() {
@@ -147,13 +160,13 @@ This shows that the authors maybe wanted to obfuscate application method calls w
 
 From that, we can see that the function is using java reflection to dynamically assign variables of Malicious class based on methods/classes names obtained from muchaspuchas file.
 
-`mapMuchasStringsToMethods` receives as an argument a byte array containing data from `cortina` file. It seems that it's loading a class based on the binary file. Based on that we decided to analyze as a next step, to analyze cortina file.
+The _mapMuchasStringsToMethods_ method receives as an argument a byte array containing data from _cortina_ file. It seems that it's loading a class based on the binary file. Based on that we decided to analyze as a next step, to analyze the _cortina_ file.
 
 ### Exploring 'cortina'
-TODO
+TODO - Explain: 
 1. Cortina is a DEX file with the package _travisscot_, we can confirm this by running `$ file cortina`
-2. Open `cortina.dex` in JADX.
-3. _travisscot_ is invoked at the end of the `mapMuchasPuchasToMethods` method.
+2. Open _cortina.dex_ in JADX.
+3. _travisscot_ is invoked at the end of the _mapMuchasPuchasToMethods_ method.
 4. _travisscot_ functions as a library that extends the main file with functionalities.
 
 ```java
@@ -181,7 +194,7 @@ public class FileManagerService extends f {
 }
 ```
 
-All that we have seen so far as happened when the `Malicious.fetchFilesAndProcess` was called which then resulted in a an additional set of functions to be loaded. One of this function, `makePdfPage` is called after the package is loaded.
+All that we have seen so far as happened when the _Malicious.fetchFilesAndProcess_ was called which then resulted in a an additional set of functions to be loaded. One of this function, _makePdfPage_ is called after the package is loaded.
 
 ```java
 public static void makePdfPage(Context context) {

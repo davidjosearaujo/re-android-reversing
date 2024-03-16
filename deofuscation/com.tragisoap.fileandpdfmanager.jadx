@@ -140,19 +140,9 @@
   "openTabs": [
     {
       "type": "class",
-      "tabPath": "com.tragisoap.fileandpdfmanager.PartPreviewActivity",
-      "subPath": "java",
-      "caret": 340,
-      "view": {
-        "x": 0,
-        "y": 153
-      }
-    },
-    {
-      "type": "class",
       "tabPath": "com.tragisoap.fileandpdfmanager.PreviewActivity",
       "subPath": "java",
-      "caret": 673,
+      "caret": 681,
       "view": {
         "x": 0,
         "y": 0
@@ -162,24 +152,14 @@
       "type": "class",
       "tabPath": "com.tragisoap.fileandpdfmanager.FileManagerService",
       "subPath": "java",
-      "caret": 425,
+      "caret": 310,
       "view": {
         "x": 0,
         "y": 0
       }
-    },
-    {
-      "type": "class",
-      "tabPath": "e5.m",
-      "subPath": "java",
-      "caret": 631,
-      "view": {
-        "x": 0,
-        "y": 256
-      }
     }
   ],
-  "activeTab": 3,
+  "activeTab": 0,
   "cacheDir": "../original_apks/com.tragisoap.fileandpdfmanager.apk.cache",
   "enableLiveReload": false,
   "searchHistory": [
