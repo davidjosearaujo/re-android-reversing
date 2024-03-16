@@ -236,7 +236,7 @@ public static void handleWork(Context context) {
 }
 ```
 
-This method will check in which country the current device is operating and stop execution for a selected list of countries. We don't know why it does this, one guess could be that the domain from where it is trying to download the fil, _1.apk_ is blocked in those country. If it not in one of those country, it stores the url in has an attribute of the _MainActivity_ class.
+This method will check in which country the current device is operating and stop execution for a selected list of countries. We don't know why it does this. It could be that the domain from where it is trying to download the file, _1.apk_ is blocked in those country or to avoid legal issues. If it not in one of those country, it stores the url in has an attribute of the _MainActivity_ class.
 
 After doing this, it creates a new _Intent_ object and starts the activity of the _PartPreviewActiviy_ class.
 
@@ -293,5 +293,17 @@ public final void onResume() {
 
 TODO: continue to follow the flow
 
+### Exploring '1.apk'
 
-Going through the _1.apk_ files, we encountered a package named "juw.khdqwmf.xftkgphgq.fhyu" containing Chinese characters. After translating these strings using Google Translate, we determined that these characters formed simple Chinese sentences unrelated to the application's purpose. Further exploration revealed that **these strings were translated into package names when passed through a function**. This indicates that the original authors chose to obscure package names using Chinese strings.
+1.apk file is a compressed file containing a dex file and other files such as assets. When we try to decompress it gives an error. We decided to decompress file by file to discover where it was failing, we found that there's one file called _AndroidManifest.xml_ that fails extraction.
+We analyzed the file with _Binocle_ and we discovered that the file has a high entropy in the beginning and end of the file. Even with the use of _strings_ and hex editors we could not found any relevant information about _AndroidManifest.xml_.
+
+But _1.apk_ contains a dex file with a lot of code (6.9MB) full of external libraries, including _facebook_, _alipay_, _alibaba_, ... packages.
+However, there are some package with obfuscated names which could be the part of the code that is malicius.
+
+<div style="display:flex;justify-content:center">
+<img src="./imgs/p5.png" width="400"/>
+</div>
+
+Going through the obfuscated package names, we encountered a package named "juw.khdqwmf.xftkgphgq.fhyu" containing Chinese characters. After translating these strings using Google Translate, we determined that these characters formed simple Chinese sentences unrelated to the application's purpose. Further exploration revealed that **these strings were translated into package names when passed through a function**. This indicates that the original authors chose to obscure package names using Chinese strings.
+
