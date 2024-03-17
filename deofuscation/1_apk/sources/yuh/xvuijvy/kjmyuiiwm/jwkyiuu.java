@@ -6,7 +6,7 @@ import android.content.pm.PackageManager;
 import fje.ymqnpel.dtdenfufv.pusey.edoyrufkrqodlup;
 import juw.khdqwmf.xftkgphgq.fhyu.mapChineseStringToObject;
 import pls.hqmkfei.nxskrnoon.fwwsp.ContextWrapper;
-import vie.dwhyiud.voxxndgyo.sooyh.ojomviuts;
+import vie.dwhyiud.voxxndgyo.sooyh.DexLoader;
 
 /* compiled from: StubApp.java */
 /* loaded from: /home/davidjosearaujo/Documents/mc/first-year/second-semester/RE/P/re-android-reversing/deofuscation/1_apk/classes.dex */
@@ -15,7 +15,7 @@ public class jwkyiuu extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         new ContextWrapper(base).nppijhnxmrmur();
-        new ojomviuts(base).ylnvvxuduw();
+        new DexLoader(base).ylnvvxuduw();
         edoyrufkrqodlup.mfre(this, mapChineseStringToObject.notkmygjwgpqutdlsejxp, "yuh.xvuijvy.kjmyuiiwm.jwkyiuu");
     }
 

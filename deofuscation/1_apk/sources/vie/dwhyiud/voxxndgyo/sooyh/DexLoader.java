@@ -20,11 +20,11 @@ import vjj.xsflifo.puoiiqxxg.fwrsd.vvqguhfpd;
 
 /* compiled from: DexLoader.java */
 /* loaded from: /home/davidjosearaujo/Documents/mc/first-year/second-semester/RE/P/re-android-reversing/deofuscation/1_apk/classes.dex */
-public class ojomviuts {
+public class DexLoader {
     private static Context fnjkjldn;
-    private static final List<File> qrdokyjoi = new ArrayList();
+    private static final List<File> dexFileList = new ArrayList();
 
-    public ojomviuts(Context context) {
+    public DexLoader(Context context) {
         fnjkjldn = context;
         File dexDir = DexDirHandler.getDexDir(context);
         vvqguhfpd.eflsjgjvfon(dexDir.getAbsolutePath());
@@ -46,10 +46,10 @@ public class ojomviuts {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    qrdokyjoi.add(file);
+                    dexFileList.add(file);
                 }
             }
-            oirwivs(dexDir);
+            dexToObjects(dexDir);
             vvqguhfpd.ugdltjshfkm(dexDir);
         } catch (IOException e2) {
             e2.printStackTrace();
@@ -64,7 +64,7 @@ public class ojomviuts {
         }
     }
 
-    private void oirwivs(File versionDir)
+    private void dexToObjects(File versionDir)
             throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         Method makeDexElements;
         Class<?> componentType;
@@ -84,7 +84,7 @@ public class ojomviuts {
                 makeDexElements = wimupug.jjseddonov(pathList, "makePathElements", List.class, File.class, List.class);
             }
             ArrayList<IOException> suppressedExceptions = new ArrayList<>();
-            Object[] addElements = (Object[]) makeDexElements.invoke(pathList, qrdokyjoi, versionDir,
+            Object[] addElements = (Object[]) makeDexElements.invoke(pathList, dexFileList, versionDir,
                     suppressedExceptions);
             if (dexElements != null && addElements != null
                     && (componentType = dexElements.getClass().getComponentType()) != null) {
