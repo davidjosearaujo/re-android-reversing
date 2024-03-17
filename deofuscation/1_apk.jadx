@@ -10,11 +10,6 @@
       "1_apk"
     ],
     [
-      "eeu.wuekite.ptluwwjmt.ypxjt",
-      "Source code",
-      "1_apk"
-    ],
-    [
       "fdx.yyryjhh.loteljwpu.jrqme",
       "Source code",
       "1_apk"
@@ -58,6 +53,16 @@
       "rjg.ugogehh.gxwrstviq.khhf",
       "Source code",
       "1_apk"
+    ],
+    [
+      "yuh.xvuijvy.kjmyuiiwm",
+      "Source code",
+      "1_apk"
+    ],
+    [
+      "eeu.wuekite.ptluwwjmt.ypxjt",
+      "Source code",
+      "1_apk"
     ]
   ],
   "codeData": {
@@ -69,6 +74,13 @@
           "declClass": "fdx.yyryjhh.loteljwpu.jrqme.vtgdtohgmlu"
         },
         "newName": "DeofuscatePackages"
+      },
+      {
+        "nodeRef": {
+          "refType": "CLASS",
+          "declClass": "juw.khdqwmf.xftkgphgq.fhyu.xrowj"
+        },
+        "newName": "mapChineseStringToObject"
       },
       {
         "nodeRef": {
@@ -122,5 +134,7 @@
   "activeTab": -1,
   "cacheDir": "1_apk.cache",
   "enableLiveReload": false,
-  "searchHistory": []
+  "searchHistory": [
+    "init"
+  ]
 }
