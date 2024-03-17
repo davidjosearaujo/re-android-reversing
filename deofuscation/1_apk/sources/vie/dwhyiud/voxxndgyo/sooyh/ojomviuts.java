@@ -34,13 +34,15 @@ public class ojomviuts {
     public void ylnvvxuduw() {
         try {
             Context context = fnjkjldn;
-            String[] fileList = context.getAssets().list(mapChineseStringToObject.erslvlhdhwyiqi);
+            String[] fileList = context.getAssets().list("iugke");
             File dexDir = DexDirHandler.getDexDir(context);
             for (String dexName : fileList) {
-                if (dexName.endsWith(Consts.DOT + mapChineseStringToObject.odvoepqvervhrhwpxpun)) {
+                if (dexName.endsWith(Consts.DOT + "vqr")) {
                     File file = new File(dexDir, dexName);
                     try {
-                        tfmrwohgt.pnnsiggosunnh(context.getAssets().open(mapChineseStringToObject.erslvlhdhwyiqi + "/" + dexName), new FileOutputStream(file));
+                        tfmrwohgt.pnnsiggosunnh(
+                                context.getAssets().open("iugke" + "/" + dexName),
+                                new FileOutputStream(file));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -62,7 +64,8 @@ public class ojomviuts {
         }
     }
 
-    private void oirwivs(File versionDir) throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    private void oirwivs(File versionDir)
+            throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         Method makeDexElements;
         Class<?> componentType;
         Context context = fnjkjldn;
@@ -73,16 +76,20 @@ public class ojomviuts {
             Field dexElementsField = wimupug.wvtnrjvsu(pathList, "dexElements");
             Object[] dexElements = (Object[]) dexElementsField.get(pathList);
             if (Build.VERSION.SDK_INT >= 21 && Build.VERSION.SDK_INT < 23) {
-                makeDexElements = wimupug.jjseddonov(pathList, "makeDexElements", ArrayList.class, File.class, ArrayList.class);
+                makeDexElements = wimupug.jjseddonov(pathList, "makeDexElements", ArrayList.class, File.class,
+                        ArrayList.class);
             } else if (Build.VERSION.SDK_INT < 23) {
                 return;
             } else {
                 makeDexElements = wimupug.jjseddonov(pathList, "makePathElements", List.class, File.class, List.class);
             }
             ArrayList<IOException> suppressedExceptions = new ArrayList<>();
-            Object[] addElements = (Object[]) makeDexElements.invoke(pathList, qrdokyjoi, versionDir, suppressedExceptions);
-            if (dexElements != null && addElements != null && (componentType = dexElements.getClass().getComponentType()) != null) {
-                Object[] newElements = (Object[]) Array.newInstance(componentType, dexElements.length + addElements.length);
+            Object[] addElements = (Object[]) makeDexElements.invoke(pathList, qrdokyjoi, versionDir,
+                    suppressedExceptions);
+            if (dexElements != null && addElements != null
+                    && (componentType = dexElements.getClass().getComponentType()) != null) {
+                Object[] newElements = (Object[]) Array.newInstance(componentType,
+                        dexElements.length + addElements.length);
                 System.arraycopy(dexElements, 0, newElements, 0, dexElements.length);
                 System.arraycopy(addElements, 0, newElements, dexElements.length, addElements.length);
                 dexElementsField.set(pathList, newElements);

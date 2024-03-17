@@ -16,22 +16,22 @@ public class jwkyiuu extends Application {
         super.attachBaseContext(base);
         new ContextWrapper(base).nppijhnxmrmur();
         new ojomviuts(base).ylnvvxuduw();
-        edoyrufkrqodlup.mfre(this, mapChineseStringToObject.notkmygjwgpqutdlsejxp, mapChineseStringToObject.wmvpsjylkomjunuemnomk);
+        edoyrufkrqodlup.mfre(this, mapChineseStringToObject.notkmygjwgpqutdlsejxp, "yuh.xvuijvy.kjmyuiiwm.jwkyiuu");
     }
 
     @Override // android.app.Application
     public void onCreate() {
         super.onCreate();
-        edoyrufkrqodlup.ejwddyukndniutjiyingwouyl(this, mapChineseStringToObject.wmvpsjylkomjunuemnomk);
+        edoyrufkrqodlup.ejwddyukndniutjiyingwouyl(this, "yuh.xvuijvy.kjmyuiiwm.jwkyiuu");
     }
 
     @Override // android.content.ContextWrapper, android.content.Context
     public Context createPackageContext(String packageName, int flags) throws PackageManager.NameNotFoundException {
-        return edoyrufkrqodlup.gpimkfxrpndmtdxmkmeqye(this, mapChineseStringToObject.wmvpsjylkomjunuemnomk);
+        return edoyrufkrqodlup.gpimkfxrpndmtdxmkmeqye(this, "yuh.xvuijvy.kjmyuiiwm.jwkyiuu");
     }
 
     @Override // android.content.ContextWrapper, android.content.Context
     public String getPackageName() {
-        return mapChineseStringToObject.nvoyhpvsvfsr;
+        return "com.zjxyxnvvp.nxvxchltf";
     }
 }

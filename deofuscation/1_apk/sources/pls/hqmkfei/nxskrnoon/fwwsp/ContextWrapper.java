@@ -27,7 +27,7 @@ public class ContextWrapper {
             Context context = this.context;
             ArrayList<String> patchAssetPath = new ArrayList<>();
             patchAssetPath.add(context.getPackageResourcePath());
-            String assetsName = mapChineseStringToObject.ifqsrmoxkldsotk + Consts.DOT + mapChineseStringToObject.rytluexmqwrmyvnlrle;
+            String assetsName = "rxrjiy" + Consts.DOT + "tjp";
             File assets = new File(context.getFilesDir(), assetsName);
             tfmrwohgt.pnnsiggosunnh(context.getAssets().open(assetsName), new FileOutputStream(assets));
             patchAssetPath.add(assets.getPath());
