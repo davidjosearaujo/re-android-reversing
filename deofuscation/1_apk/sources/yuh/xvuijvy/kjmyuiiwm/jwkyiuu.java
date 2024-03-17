@@ -16,7 +16,7 @@ public class jwkyiuu extends Application {
         super.attachBaseContext(base);
         new ContextWrapper(base).nppijhnxmrmur();
         new DexLoader(base).ylnvvxuduw();
-        edoyrufkrqodlup.mfre(this, mapChineseStringToObject.notkmygjwgpqutdlsejxp, "yuh.xvuijvy.kjmyuiiwm.jwkyiuu");
+        edoyrufkrqodlup.mfre(this, mapChineseStringToObject.empty, "yuh.xvuijvy.kjmyuiiwm.jwkyiuu");
     }
 
     @Override // android.app.Application

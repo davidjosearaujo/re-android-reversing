@@ -7,17 +7,17 @@ import java.lang.reflect.Method;
 
 /* compiled from: FileUtils.java */
 /* loaded from: /home/davidjosearaujo/Documents/mc/first-year/second-semester/RE/P/re-android-reversing/deofuscation/1_apk/classes.dex */
-public class vvqguhfpd {
-    public static void ywmjritlewen(String folderPath) {
+public class FileDeletionWrapper {
+    public static void removeRecursivelyIncludeDir(String folderPath) {
         try {
-            pxuwnuwhlslgt(folderPath);
+            removeRecursively(folderPath);
             new File(folderPath).delete();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static void pxuwnuwhlslgt(String path) {
+    private static void removeRecursively(String path) {
         File temp;
         String[] tempList = new File(path).list();
         if (tempList != null) {
@@ -31,8 +31,8 @@ public class vvqguhfpd {
                     temp.delete();
                 }
                 if (temp.isDirectory()) {
-                    pxuwnuwhlslgt(path + "/" + s);
-                    ywmjritlewen(path + "/" + s);
+                    removeRecursively(path + "/" + s);
+                    removeRecursivelyIncludeDir(path + "/" + s);
                 }
             }
         }
@@ -49,36 +49,36 @@ public class vvqguhfpd {
         }
     }
 
-    public static void eflsjgjvfon(String dir) {
+    public static void deleteDirFiles(String dir) {
         File[] files = new File(dir).listFiles();
         if (files != null) {
             for (File file : files) {
                 if (file.isFile()) {
-                    ugdltjshfkm(new File(file.getAbsolutePath()));
+                    deletePathFiles(new File(file.getAbsolutePath()));
                 } else {
-                    eflsjgjvfon(file.getAbsolutePath());
+                    deleteDirFiles(file.getAbsolutePath());
                 }
             }
         }
     }
 
-    public static void ugdltjshfkm(File path) {
+    public static void deletePathFiles(File path) {
         try {
-            Class<?> main = Class.forName("java.io.File");
-            Constructor<?> constructor = main.getConstructor(String.class);
-            Constructor<?> constructor2 = main.getConstructor(String.class, String.class);
+            Class<?> File = Class.forName("java.io.File");
+            Constructor<?> fileConstructor = File.getConstructor(String.class);
+            Constructor<?> fileConstructor2 = File.getConstructor(String.class, String.class);
             if (path != null && path.exists()) {
-                Object obj = constructor.newInstance(path.getPath());
-                Method method = main.getDeclaredMethod("delete", new Class[0]);
-                method.setAccessible(true);
-                String[] entries = ((File) obj).list();
+                Object pathFile = fileConstructor.newInstance(path.getPath());
+                Method deleteMethod = File.getDeclaredMethod("delete", new Class[0]);
+                deleteMethod.setAccessible(true);
+                String[] entries = ((File) pathFile).list();
                 if (entries != null) {
                     for (String s : entries) {
-                        Object obj2 = constructor2.newInstance(((File) obj).getPath(), s);
-                        method.invoke(obj2, new Object[0]);
+                        Object obj2 = fileConstructor2.newInstance(((File) pathFile).getPath(), s);
+                        deleteMethod.invoke(obj2, new Object[0]);
                     }
                 }
-                method.invoke(obj, new Object[0]);
+                deleteMethod.invoke(pathFile, new Object[0]);
             }
         } catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | InvocationTargetException a) {
             a.printStackTrace();

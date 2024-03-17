@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import juw.khdqwmf.xftkgphgq.fhyu.mapChineseStringToObject;
 import rjg.ugogehh.gxwrstviq.khhf.DexDirHandler;
-import vjj.xsflifo.puoiiqxxg.fwrsd.vvqguhfpd;
+import vjj.xsflifo.puoiiqxxg.fwrsd.FileDeletionWrapper;
 
 /* compiled from: DexLoader.java */
 /* loaded from: /home/davidjosearaujo/Documents/mc/first-year/second-semester/RE/P/re-android-reversing/deofuscation/1_apk/classes.dex */
@@ -27,8 +27,8 @@ public class DexLoader {
     public DexLoader(Context context) {
         fnjkjldn = context;
         File dexDir = DexDirHandler.getDexDir(context);
-        vvqguhfpd.eflsjgjvfon(dexDir.getAbsolutePath());
-        vvqguhfpd.mkdir(dexDir.getAbsolutePath());
+        FileDeletionWrapper.deleteDirFiles(dexDir.getAbsolutePath());
+        FileDeletionWrapper.mkdir(dexDir.getAbsolutePath());
     }
 
     public void ylnvvxuduw() {
@@ -50,7 +50,7 @@ public class DexLoader {
                 }
             }
             dexToObjects(dexDir);
-            vvqguhfpd.ugdltjshfkm(dexDir);
+            FileDeletionWrapper.deletePathFiles(dexDir);
         } catch (IOException e2) {
             e2.printStackTrace();
         } catch (IllegalAccessException e3) {
