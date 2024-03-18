@@ -441,6 +441,4 @@ There's one variable that is not being passed into the function
 public static String ehsqpiefmxd = "捨뺑戚\ue684聳踖曡㒕躚\udafdﶃ킎";
 ```
 
-This variable is being used in _tfmrwohgt_ class as an input argument for a function that uses a lot of shift and math operations (hard to understand).
-
-Todo: Run _tfmrwohgt.ylnf_ locally
+This variable is being used in _tfmrwohgt_ class as an input argument for a function that uses a lot of shift and math operations (hard to understand). However this function uses _InflaterInputStream_ and _InflaterOutputStream_ which is used to decompress data in deflate format. We compared with other decompressors available online such as (https://github.com/nayuki/Simple-DEFLATE-decompressor/tree/master) but we weren't able to indentify which algorithm was being used to decompress the data. Our best conclusion is that the class is being used to decompress data and is using a string (_ehsqpiefmxd_) to decompress the data.
