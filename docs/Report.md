@@ -410,39 +410,37 @@ flowchart TD
 ### Exploring '1.apk'
 
 1.apk file is a compressed file containing a dex file and other files such as assets. When we try to decompress it gives an error. We decided to decompress file by file to discover where it was failing, we found that there's one file called _AndroidManifest.xml_ that fails extraction.
-We analyzed the file with _Binocle_ and we discovered that the file has a high entropy in the beginning and end of the file. Even with the use of _strings_ and hex editors we could not found any relevant information about _AndroidManifest.xml_.
+We analyzed the file with _Binocle_ and we discovered that the file has a high entropy in the beginning and end of the file. Even with the use of _strings_ and hex editors we could not found any relevant information about _AndroidManifest.xml_ other than it appears to request a large set of system permissions.
 
 But _1.apk_ contains a dex file with a lot of code (6.9MB) full of external libraries, including _facebook_, _alipay_, _alibaba_, ... packages.
-However, there are some package with obfuscated names which could be the part of the code that is malicius.
+However, there are some package with obfuscated names which could be the part of the code that is malicious.
 
 <div style="display:flex;justify-content:center">
 <img src="./imgs/p5.png" width="300"/>
 </div>
 
-Going through the obfuscated package names, we encountered a package named "juw.khdqwmf.xftkgphgq.fhyu" containing Chinese characters. After translating these strings using Google Translate, we determined that these characters formed simple Chinese sentences unrelated to the application's purpose. Further exploration revealed that **these strings were translated into package names when passed through a function**. This indicates that the original authors chose to obscure package names using Chinese strings.
+Going through the obfuscated package names, we encountered a package named "_juw.khdqwmf.xftkgphgq.fhyu_" containing Chinese characters. After translating these strings using Google Translate, we determined that these characters formed simple Chinese sentences unrelated to the application's purpose. Further exploration revealed that **these strings were translated into package names when passed through a function**. This indicates that the original authors chose to obscure package names using Chinese strings.
 
 These chinese strings were being passed to a function which seemed to do some logic with the strings. We decided to run that function locally in a separate java file and these strings were being converted to package names included in the code.
 
-```
-        chineseStringToPackageName("恊恆恛思恋恅恆恚恙恅恊思恘恙恞恊恆恚恚恄恞思恙恄恘恊恚恆恆", 2); //"yuh.xvuijvy.kjmyuiiwm.jwkyiuu"
-        chineseStringToPackageName("恅恂恁", 2); //"vqr"
-        chineseStringToPackageName("恚恆恔恘恖", 2); //"iugke"
-        chineseStringToPackageName("恁恋恁恙恚恊", 2); //"rxrjiy"
-        chineseStringToPackageName("恇恙恃", 2); //"tjp"
-        chineseStringToPackageName("恐恜恞思恉恙恋恊恋恝恅恅恃思恝恋恅恋恐恛恟恇恕", 2); //"com.zjxyxnvvp.nxvxchltf"
-        chineseStringToPackageName("恃恛恇思恗恔恁恁恀恁恃思恛恔恗恇恔恀恀恅恄思恛恖恖恆恇恗恆恇恛恘恊恖恛恃恘恟恛恄恜恋", 2); //"pht.dgrrsrp.hgdtgssvw.heeutduthkyehpklhwox"
-        chineseStringToPackageName("", 2); // ""
+```java
+    chineseStringToPackageName("恊恆恛思恋恅恆恚恙恅恊思恘恙恞恊恆恚恚恄恞思恙恄恘恊恚恆恆", 2); //"yuh.xvuijvy.kjmyuiiwm.jwkyiuu"
+    chineseStringToPackageName("恅恂恁", 2); //"vqr"
+    chineseStringToPackageName("恚恆恔恘恖", 2); //"iugke"
+    chineseStringToPackageName("恁恋恁恙恚恊", 2); //"rxrjiy"
+    chineseStringToPackageName("恇恙恃", 2); //"tjp"
+    chineseStringToPackageName("恐恜恞思恉恙恋恊恋恝恅恅恃思恝恋恅恋恐恛恟恇恕", 2); //"com.zjxyxnvvp.nxvxchltf"
+    chineseStringToPackageName("恃恛恇思恗恔恁恁恀恁恃思恛恔恗恇恔恀恀恅恄思恛恖恖恆恇恗恆恇恛恘恊恖恛恃恘恟恛恄恜恋", 2); //"pht.dgrrsrp.hgdtgssvw.heeutduthkyehpklhwox"
+    chineseStringToPackageName("", 2); // ""
 ```
 
 The code is probably using these strings in other parts of the code with reflection.
 There's one variable that is not being passed into the function
 
-```
+```java
 public static String ehsqpiefmxd = "捨뺑戚\ue684聳踖曡㒕躚\udafdﶃ킎";
 ```
 
-This variable is being used in _tfmrwohgt:_ class as an input argument for a function that uses a lot of shift and math operations (hard to understand).
+This variable is being used in _tfmrwohgt_ class as an input argument for a function that uses a lot of shift and math operations (hard to understand).
 
-
-Todo: Run _tfmrwohgt.ylnf locally
-
+Todo: Run _tfmrwohgt.ylnf_ locally
