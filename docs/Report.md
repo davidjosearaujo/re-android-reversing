@@ -396,8 +396,8 @@ flowchart TD
     F -- No --> C([Malicius.fetchFilesAndProcess])
     C --> D([mapMuchasPuchasToMethods])
     D --> E([travisscot.init])
-    E --> B
-    B --> F{travisscot initialized ?}
+    E --> F
+    B --> F{travisscot \n initialized ?}
     F -- Yes ---> G([travisscot.makePdfPage])
     G --- H[set 1.apk url]
     G --> I([PartPreviewActivity.onNewIntent])
@@ -416,7 +416,7 @@ But _1.apk_ contains a dex file with a lot of code (6.9MB) full of external libr
 However, there are some package with obfuscated names which could be the part of the code that is malicius.
 
 <div style="display:flex;justify-content:center">
-<img src="./imgs/p5.png" width="400"/>
+<img src="./imgs/p5.png" width="300"/>
 </div>
 
 Going through the obfuscated package names, we encountered a package named "juw.khdqwmf.xftkgphgq.fhyu" containing Chinese characters. After translating these strings using Google Translate, we determined that these characters formed simple Chinese sentences unrelated to the application's purpose. Further exploration revealed that **these strings were translated into package names when passed through a function**. This indicates that the original authors chose to obscure package names using Chinese strings.
