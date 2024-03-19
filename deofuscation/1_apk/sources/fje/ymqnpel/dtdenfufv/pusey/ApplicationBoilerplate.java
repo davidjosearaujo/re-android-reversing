@@ -16,7 +16,8 @@ import java.util.Set;
 public class ApplicationBoilerplate {
     private static Application baseApplication;
 
-    public static void init(Application application, String delegateApplicationName, String stubApplicationName) {
+    public static void initBuilder(Application application, String delegateApplicationName,
+            String stubApplicationName) {
         if (TextUtils.isEmpty(delegateApplicationName) || stubApplicationName.equals(delegateApplicationName)) {
             baseApplication = application;
             return;
@@ -34,7 +35,7 @@ public class ApplicationBoilerplate {
         }
     }
 
-    public static void ejwddyukndniutjiyingwouyl(Application application, String stubApplicationName) {
+    public static void onCreateBuilder(Application application, String stubApplicationName) {
         Application application2 = baseApplication;
         if (application2 == null || stubApplicationName.equals(application2.getClass().getName())) {
             return;
@@ -63,7 +64,7 @@ public class ApplicationBoilerplate {
         }
     }
 
-    public static Application gpimkfxrpndmtdxmkmeqye(Application application, String stubApplicationName) {
+    public static Application setContentProvider(Application application, String stubApplicationName) {
         Application application2 = baseApplication;
         if (application2 == null || stubApplicationName.equals(application2.getClass().getName())) {
             return application;
@@ -72,7 +73,7 @@ public class ApplicationBoilerplate {
             Context contextImpl = application.getBaseContext();
             Object loadedApk = ObjectHandler.attributeGetter(contextImpl.getClass(), contextImpl, "mPackageInfo");
             ObjectHandler.attributeSetter("android.app.LoadedApk", loadedApk, "mApplication", baseApplication);
-            Object activityThread = woyqtiqyiiijsojjlgvrkjxv();
+            Object activityThread = getCurrentActivityThread();
             Map<Object, Object> mProviderMap = (Map) ObjectHandler.attributeGetter(activityThread.getClass(),
                     activityThread,
                     "mProviderMap");
@@ -92,7 +93,7 @@ public class ApplicationBoilerplate {
         return baseApplication;
     }
 
-    private static Object woyqtiqyiiijsojjlgvrkjxv() {
+    private static Object getCurrentActivityThread() {
         try {
             Class<?> cls = Class.forName("android.app.ActivityThread");
             Method declaredMethod = cls.getDeclaredMethod("currentActivityThread", new Class[0]);

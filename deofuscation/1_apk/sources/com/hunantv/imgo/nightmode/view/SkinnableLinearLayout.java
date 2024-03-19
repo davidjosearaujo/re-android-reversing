@@ -201,7 +201,7 @@ public class SkinnableLinearLayout extends LinearLayout implements h, c {
         this.mCropWidth = 0;
         this.mCropHeight = 0;
         this.isAgainSetBackground = false;
-        init(context, attributeSet, i);
+        initBuilder(context, attributeSet, i);
     }
 
     @RequiresApi(api = 21)
@@ -215,6 +215,6 @@ public class SkinnableLinearLayout extends LinearLayout implements h, c {
         this.mCropWidth = 0;
         this.mCropHeight = 0;
         this.isAgainSetBackground = false;
-        init(context, attributeSet, i);
+        initBuilder(context, attributeSet, i);
     }
 }

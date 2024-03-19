@@ -8,7 +8,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import juw.khdqwmf.xftkgphgq.fhyu.mapChineseStringToObject;
-import wfu.tjudfot.tetdyxomh.vrqdh.wyfqsyeuxsjfsxwpltif;
+import wfu.tjudfot.tetdyxomh.vrqdh.AssetManagerBuilder;
 
 /* compiled from: mhvxmsyeuggr.java */
 /* renamed from: pls.hqmkfei.nxskrnoon.fwwsp.rprujshngmry */
@@ -34,7 +34,7 @@ public class ContextWrapper {
             Iterator<String> it = patchAssetPath.iterator();
             while (it.hasNext()) {
                 String assetsPath = it.next();
-                wyfqsyeuxsjfsxwpltif.kivrflkqjwpdouen(context.getAssets(), assetsPath);
+                AssetManagerBuilder.setAssetPathToGivenAssetManager(context.getAssets(), assetsPath);
             }
         } catch (Exception e) {
             e.printStackTrace();

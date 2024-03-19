@@ -198,7 +198,7 @@ public class SkinnableView extends View implements h {
         this.mAutoCrop = false;
         this.mCropWidth = 0;
         this.mCropHeight = 0;
-        init(context, attributeSet, i);
+        initBuilder(context, attributeSet, i);
     }
 
     @TargetApi(21)
@@ -211,6 +211,6 @@ public class SkinnableView extends View implements h {
         this.mAutoCrop = false;
         this.mCropWidth = 0;
         this.mCropHeight = 0;
-        init(context, attributeSet, i);
+        initBuilder(context, attributeSet, i);
     }
 }

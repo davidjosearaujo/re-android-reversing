@@ -61,7 +61,7 @@ public class CbcsDrmManager implements IDrmManager {
         String str;
         if (!isInited() && !isIniting()) {
             if (ImgoLibLoader.getInstance().syncTryLoadMgtvDRMLib(application)) {
-                str = "LightPlayDrmManager init suc=" + LightPlayDrmManager.getInstance().init();
+                str = "LightPlayDrmManager init suc=" + LightPlayDrmManager.getInstance().initBuilder();
             } else {
                 str = "syncTryLoadMgtvDRMLib failed";
             }

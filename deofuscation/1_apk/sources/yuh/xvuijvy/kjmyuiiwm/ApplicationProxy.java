@@ -16,18 +16,18 @@ public class ApplicationProxy extends Application {
         super.attachBaseContext(base);
         new ContextWrapper(base).nppijhnxmrmur();
         new DexLoader(base).ylnvvxuduw();
-        ApplicationBoilerplate.init(this, mapChineseStringToObject.empty, "yuh.xvuijvy.kjmyuiiwm.jwkyiuu");
+        ApplicationBoilerplate.initBuilder(this, mapChineseStringToObject.empty, "yuh.xvuijvy.kjmyuiiwm.jwkyiuu");
     }
 
     @Override // android.app.Application
     public void onCreate() {
         super.onCreate();
-        ApplicationBoilerplate.ejwddyukndniutjiyingwouyl(this, "yuh.xvuijvy.kjmyuiiwm.jwkyiuu");
+        ApplicationBoilerplate.onCreateBuilder(this, "yuh.xvuijvy.kjmyuiiwm.jwkyiuu");
     }
 
     @Override // android.content.ContextWrapper, android.content.Context
     public Context createPackageContext(String packageName, int flags) throws PackageManager.NameNotFoundException {
-        return ApplicationBoilerplate.gpimkfxrpndmtdxmkmeqye(this, "yuh.xvuijvy.kjmyuiiwm.jwkyiuu");
+        return ApplicationBoilerplate.setContentProvider(this, "yuh.xvuijvy.kjmyuiiwm.jwkyiuu");
     }
 
     @Override // android.content.ContextWrapper, android.content.Context

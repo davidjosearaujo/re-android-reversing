@@ -448,22 +448,20 @@ This variable is being used in _tfmrwohgt_ class as an input argument for a func
 
 Despite all of this, since this package is heavily ofuscated, the simplest action at this point was to replace all the references to these variable by their content in string format, as search in the directory for all of the occurrences of these strings.
 
+Searching for the first value _jwkyiuu_ gives us a class of the same name, in a package of the same name as the value contained by the variable: _yuh.xvuijvy.kjmyuiiwm.jwkyiuu_. This class appears to exist with the sole purpose of ofuscation, has it behaviour appear to work as some sort of "applicational proxy", has it's method only action is to pass the class own name to another package that elaborates on the desired action.
+
+
 
 #### Exploring external packages
-Inside _com_ package there are some packages related to famous trademarks such as _alibaba_, _facebook_, _huawei_ and some more. Although they seem to be legit, it's not usual one pdf reader download an apk with these kind of packages, we think that they could have been tampered and some malicius code could be there, however it's hard to confirm that because these packages are full of java code.
+Inside _com_ package there are some packages related to famous trademarks such as _alibaba_, _facebook_, _huawei_ and some more. Although they seem to be legit, it's not usual one pdf reader download an apk with these kind of packages, we think that they could have been tampered and some malicious code could be there, however it's hard to confirm that because these packages are full of java code.
 
 We tried to find references in the previously analyzed code (packages with obfuscated names) and there weren't any direct references to _com_ packages (except for just 1 reference which is not relevant). However there's one function that returns a package name in the following way:
-```
-    @Override // android.content.ContextWrapper, android.content.Context
-    public String getPackageName() {
-        return "com.zjxyxnvvp.nxvxchltf";
-    }
+
+```java
+@Override // android.content.ContextWrapper, android.content.Context
+public String getPackageName() {
+    return "com.zjxyxnvvp.nxvxchltf";
+}
 ```
 
 But 1.apk doesn't contain this package _com.zjxyxnvvp.nxvxchltf_, maybe 1.apk is missing some packages.
-
-
-TODO
-
-
-Searching for the first value _jwkyiuu_ gives us a class of the same name, in a package of the same name as the value contained by the variable: _yuh.xvuijvy.kjmyuiiwm.jwkyiuu_. This class appears to exist with the sole purpose of ofuscation, has it behaviour appear to work as some sort of "applicational proxy", has it's method only action is to pass the class own name to another package that elaborates on the desired action.

@@ -13,8 +13,8 @@ import juw.khdqwmf.xftkgphgq.fhyu.mapChineseStringToObject;
 
 /* compiled from: CoreComponentFactory.java */
 /* loaded from: /home/davidjosearaujo/Documents/mc/first-year/second-semester/RE/P/re-android-reversing/deofuscation/1_apk/classes.dex */
-public class heeutduthkyehpklhwox extends AppComponentFactory {
-    private heeutduthkyehpklhwox mFactory;
+public class AppComponentFactoryBuilder extends AppComponentFactory {
+    private AppComponentFactoryBuilder mFactory;
 
     /* compiled from: CoreComponentFactory.java */
     /*
@@ -34,8 +34,8 @@ public class heeutduthkyehpklhwox extends AppComponentFactory {
         return obj;
     }
 
-    private heeutduthkyehpklhwox getAppComponentFactory() {
-        heeutduthkyehpklhwox appComponentFactory = this.mFactory;
+    private AppComponentFactoryBuilder getAppComponentFactory() {
+        AppComponentFactoryBuilder appComponentFactory = this.mFactory;
         if (appComponentFactory != null) {
             return appComponentFactory;
         }
@@ -43,17 +43,18 @@ public class heeutduthkyehpklhwox extends AppComponentFactory {
         if (processName == null || (!processName.contains(":p706584458e5f9d1a8b5a2a45")
                 && !processName.contains(":pae386831f66f8811aa550ff6"))) {
             try {
-                this.mFactory = (heeutduthkyehpklhwox) Class.forName("pht.dgrrsrp.hgdtgssvw.heeutduthkyehpklhwox")
+                this.mFactory = (AppComponentFactoryBuilder) Class
+                        .forName("pht.dgrrsrp.hgdtgssvw.AppComponentFactoryBuilder")
                         .newInstance();
             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
                 if (!Process.isIsolated()) {
                     Log.e("LoadedApk", "Unable to instantiate appComponentFactory", e);
                 }
-                this.mFactory = new heeutduthkyehpklhwox();
+                this.mFactory = new AppComponentFactoryBuilder();
             }
         }
         Log.i("LoadedApk", "Fast path. Process name: " + processName);
-        heeutduthkyehpklhwox appComponentFactory2 = new heeutduthkyehpklhwox();
+        AppComponentFactoryBuilder appComponentFactory2 = new AppComponentFactoryBuilder();
         this.mFactory = appComponentFactory2;
         return appComponentFactory2;
     }

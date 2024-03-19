@@ -70,7 +70,7 @@ public class MaskDrmManager implements IDrmManager {
             if (!isInited() && !isIniting()) {
                 boolean syncTryLoadMgtvDRMLib = ImgoLibLoader.getInstance().syncTryLoadMgtvDRMLib(application);
                 if (syncTryLoadMgtvDRMLib) {
-                    syncTryLoadMgtvDRMLib = LightPlayDrmManager.getInstance().init();
+                    syncTryLoadMgtvDRMLib = LightPlayDrmManager.getInstance().initBuilder();
                     str = "MaskDrmManager";
                     str2 = "LightPlayDrmManager init suc=" + syncTryLoadMgtvDRMLib;
                 } else {
