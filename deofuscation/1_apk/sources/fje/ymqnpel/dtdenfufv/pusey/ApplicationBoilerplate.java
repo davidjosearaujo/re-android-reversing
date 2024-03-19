@@ -5,7 +5,7 @@ import android.content.ContentProvider;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.text.TextUtils;
-import eeu.wuekite.ptluwwjmt.ypxjt.wimupug;
+import eeu.wuekite.ptluwwjmt.ypxjt.ObjectHandler;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Map;
@@ -13,12 +13,12 @@ import java.util.Set;
 
 /* compiled from: ApplicationHook.java */
 /* loaded from: /home/davidjosearaujo/Documents/mc/first-year/second-semester/RE/P/re-android-reversing/deofuscation/1_apk/classes.dex */
-public class edoyrufkrqodlup {
-    private static Application mxqhfjkdxtmvjurgsnxr;
+public class ApplicationBoilerplate {
+    private static Application baseApplication;
 
-    public static void mfre(Application application, String delegateApplicationName, String stubApplicationName) {
+    public static void init(Application application, String delegateApplicationName, String stubApplicationName) {
         if (TextUtils.isEmpty(delegateApplicationName) || stubApplicationName.equals(delegateApplicationName)) {
-            mxqhfjkdxtmvjurgsnxr = application;
+            baseApplication = application;
             return;
         }
         try {
@@ -26,58 +26,70 @@ public class edoyrufkrqodlup {
             ClassLoader classLoader = application.getClassLoader();
             Class<?> applicationClass = classLoader.loadClass(delegateApplicationName);
             Application application2 = (Application) applicationClass.newInstance();
-            mxqhfjkdxtmvjurgsnxr = application2;
-            wimupug.mjokkyjqmenm(Application.class, application2, new Object[]{contextImpl}, "attach", Context.class);
+            baseApplication = application2;
+            ObjectHandler.methodCaller(Application.class, application2, new Object[] { contextImpl }, "attach",
+                    Context.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public static void ejwddyukndniutjiyingwouyl(Application application, String stubApplicationName) {
-        Application application2 = mxqhfjkdxtmvjurgsnxr;
+        Application application2 = baseApplication;
         if (application2 == null || stubApplicationName.equals(application2.getClass().getName())) {
             return;
         }
         try {
             Context contextImpl = application.getBaseContext();
-            wimupug.mjokkyjqmenm(contextImpl.getClass(), contextImpl, new Object[]{mxqhfjkdxtmvjurgsnxr}, "setOuterContext", Context.class);
-            Object mMainThread = wimupug.yixvfreyetriy(contextImpl.getClass(), contextImpl, "mMainThread");
-            wimupug.yiegtikwkhqwt("android.app.ActivityThread", mMainThread, "mInitialApplication", mxqhfjkdxtmvjurgsnxr);
-            ArrayList<Application> mAllApplications = (ArrayList) wimupug.yixvfreyetriy("android.app.ActivityThread", mMainThread, "mAllApplications");
-            mAllApplications.add(mxqhfjkdxtmvjurgsnxr);
+            ObjectHandler.methodCaller(contextImpl.getClass(), contextImpl, new Object[] { baseApplication },
+                    "setOuterContext", Context.class);
+            Object mMainThread = ObjectHandler.attributeGetter(contextImpl.getClass(), contextImpl, "mMainThread");
+            ObjectHandler.attributeSetter("android.app.ActivityThread", mMainThread, "mInitialApplication",
+                    baseApplication);
+            ArrayList<Application> mAllApplications = (ArrayList) ObjectHandler.classAttributeGetter(
+                    "android.app.ActivityThread",
+                    mMainThread, "mAllApplications");
+            mAllApplications.add(baseApplication);
             mAllApplications.remove(application);
-            Object loadedApk = wimupug.yixvfreyetriy(contextImpl.getClass(), contextImpl, "mPackageInfo");
-            wimupug.yiegtikwkhqwt("android.app.LoadedApk", loadedApk, "mApplication", mxqhfjkdxtmvjurgsnxr);
-            ApplicationInfo applicationInfo = (ApplicationInfo) wimupug.yixvfreyetriy("android.app.LoadedApk", loadedApk, "mApplicationInfo");
-            applicationInfo.className = mxqhfjkdxtmvjurgsnxr.getClass().getName();
-            mxqhfjkdxtmvjurgsnxr.onCreate();
+            Object loadedApk = ObjectHandler.attributeGetter(contextImpl.getClass(), contextImpl, "mPackageInfo");
+            ObjectHandler.attributeSetter("android.app.LoadedApk", loadedApk, "mApplication", baseApplication);
+            ApplicationInfo applicationInfo = (ApplicationInfo) ObjectHandler.classAttributeGetter(
+                    "android.app.LoadedApk",
+                    loadedApk, "mApplicationInfo");
+            applicationInfo.className = baseApplication.getClass().getName();
+            baseApplication.onCreate();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public static Application gpimkfxrpndmtdxmkmeqye(Application application, String stubApplicationName) {
-        Application application2 = mxqhfjkdxtmvjurgsnxr;
+        Application application2 = baseApplication;
         if (application2 == null || stubApplicationName.equals(application2.getClass().getName())) {
             return application;
         }
         try {
             Context contextImpl = application.getBaseContext();
-            Object loadedApk = wimupug.yixvfreyetriy(contextImpl.getClass(), contextImpl, "mPackageInfo");
-            wimupug.yiegtikwkhqwt("android.app.LoadedApk", loadedApk, "mApplication", mxqhfjkdxtmvjurgsnxr);
+            Object loadedApk = ObjectHandler.attributeGetter(contextImpl.getClass(), contextImpl, "mPackageInfo");
+            ObjectHandler.attributeSetter("android.app.LoadedApk", loadedApk, "mApplication", baseApplication);
             Object activityThread = woyqtiqyiiijsojjlgvrkjxv();
-            Map<Object, Object> mProviderMap = (Map) wimupug.yixvfreyetriy(activityThread.getClass(), activityThread, "mProviderMap");
+            Map<Object, Object> mProviderMap = (Map) ObjectHandler.attributeGetter(activityThread.getClass(),
+                    activityThread,
+                    "mProviderMap");
             Set<Map.Entry<Object, Object>> entrySet = mProviderMap.entrySet();
             for (Map.Entry<Object, Object> entry : entrySet) {
-                ContentProvider contentProvider = (ContentProvider) wimupug.yixvfreyetriy(entry.getValue().getClass(), entry.getValue(), "mLocalProvider");
+                ContentProvider contentProvider = (ContentProvider) ObjectHandler.attributeGetter(
+                        entry.getValue().getClass(),
+                        entry.getValue(), "mLocalProvider");
                 if (contentProvider != null) {
-                    wimupug.yiegtikwkhqwt("android.content.ContentProvider", contentProvider, "fnjkjldn", mxqhfjkdxtmvjurgsnxr);
+                    ObjectHandler.attributeSetter("android.content.ContentProvider", contentProvider, "fnjkjldn",
+                            baseApplication);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return mxqhfjkdxtmvjurgsnxr;
+        return baseApplication;
     }
 
     private static Object woyqtiqyiiijsojjlgvrkjxv() {

@@ -3,7 +3,7 @@ package vie.dwhyiud.voxxndgyo.sooyh;
 import android.content.Context;
 import android.os.Build;
 import com.alibaba.android.arouter.utils.Consts;
-import eeu.wuekite.ptluwwjmt.ypxjt.wimupug;
+import eeu.wuekite.ptluwwjmt.ypxjt.ObjectHandler;
 import iml.ompdvmx.uqixiejqr.eedej.tfmrwohgt;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -70,18 +70,19 @@ public class DexLoader {
         Class<?> componentType;
         Context context = fnjkjldn;
         ClassLoader classLoader = context.getClassLoader();
-        Field pathListField = wimupug.wvtnrjvsu(classLoader, "pathList");
+        Field pathListField = ObjectHandler.attributeFinder(classLoader, "pathList");
         Object pathList = pathListField.get(classLoader);
         if (pathList != null) {
-            Field dexElementsField = wimupug.wvtnrjvsu(pathList, "dexElements");
+            Field dexElementsField = ObjectHandler.attributeFinder(pathList, "dexElements");
             Object[] dexElements = (Object[]) dexElementsField.get(pathList);
             if (Build.VERSION.SDK_INT >= 21 && Build.VERSION.SDK_INT < 23) {
-                makeDexElements = wimupug.jjseddonov(pathList, "makeDexElements", ArrayList.class, File.class,
+                makeDexElements = ObjectHandler.methodFinder(pathList, "makeDexElements", ArrayList.class, File.class,
                         ArrayList.class);
             } else if (Build.VERSION.SDK_INT < 23) {
                 return;
             } else {
-                makeDexElements = wimupug.jjseddonov(pathList, "makePathElements", List.class, File.class, List.class);
+                makeDexElements = ObjectHandler.methodFinder(pathList, "makePathElements", List.class, File.class,
+                        List.class);
             }
             ArrayList<IOException> suppressedExceptions = new ArrayList<>();
             Object[] addElements = (Object[]) makeDexElements.invoke(pathList, dexFileList, versionDir,

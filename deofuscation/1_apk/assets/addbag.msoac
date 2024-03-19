@@ -1,0 +1,11 @@
+[
+    {
+        "bizName": "msoa.taobao.cart.open",
+        "serviceDependency": [
+            {
+                "serviceId": "msoa.taobao.cart.open.add",
+                "version": "1.0"
+            }
+        ]
+    }
+]

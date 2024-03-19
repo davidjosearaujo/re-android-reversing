@@ -1,0 +1,11 @@
+{
+  "materialParams": {
+    "templateId": 102001,
+    "bizline": "guangguang",
+    "position": "edit.video",
+    "materialType": 18,
+    "pageSize": 100,
+    "useCache": true,
+    "cacheTime": 10
+  }
+}

@@ -7,8 +7,8 @@ import java.util.Arrays;
 
 /* compiled from: Reflect.java */
 /* loaded from: /home/davidjosearaujo/Documents/mc/first-year/second-semester/RE/P/re-android-reversing/deofuscation/1_apk/classes.dex */
-public class wimupug {
-    public static Field wvtnrjvsu(Object instance, String name) throws NoSuchFieldException {
+public class ObjectHandler {
+    public static Field attributeFinder(Object instance, String name) throws NoSuchFieldException {
         for (Class clazz = instance.getClass(); clazz != null; clazz = clazz.getSuperclass()) {
             try {
                 Field field = clazz.getDeclaredField(name);
@@ -22,7 +22,8 @@ public class wimupug {
         throw new NoSuchFieldException("Field " + name + " not found in " + instance.getClass());
     }
 
-    public static Method jjseddonov(Object instance, String name, Class... parameterTypes) throws NoSuchMethodException {
+    public static Method methodFinder(Object instance, String name, Class... parameterTypes)
+            throws NoSuchMethodException {
         for (Class clazz = instance.getClass(); clazz != null; clazz = clazz.getSuperclass()) {
             try {
                 Method method = clazz.getDeclaredMethod(name, parameterTypes);
@@ -33,21 +34,24 @@ public class wimupug {
             } catch (NoSuchMethodException e) {
             }
         }
-        throw new NoSuchMethodException("Method " + name + " with parameters " + Arrays.asList(parameterTypes) + " not found in " + instance.getClass());
+        throw new NoSuchMethodException("Method " + name + " with parameters " + Arrays.asList(parameterTypes)
+                + " not found in " + instance.getClass());
     }
 
-    public static Object mjokkyjqmenm(Class<?> clazz, Object obj, Object[] args, String methodName, Class<?>... parameterTypes) {
+    public static Object methodCaller(Class<?> clazz, Object obj, Object[] args, String methodName,
+            Class<?>... parameterTypes) {
         try {
             Method method = clazz.getDeclaredMethod(methodName, parameterTypes);
             method.setAccessible(true);
             return method.invoke(obj, args);
-        } catch (IllegalAccessException | IllegalArgumentException | NoSuchMethodException | InvocationTargetException e) {
+        } catch (IllegalAccessException | IllegalArgumentException | NoSuchMethodException
+                | InvocationTargetException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public static Object yixvfreyetriy(Class<?> clazz, Object obj, String fieldName) {
+    public static Object attributeGetter(Class<?> clazz, Object obj, String fieldName) {
         try {
             Field field = clazz.getDeclaredField(fieldName);
             field.setAccessible(true);
@@ -58,17 +62,17 @@ public class wimupug {
         }
     }
 
-    public static Object yixvfreyetriy(String className, Object obj, String fieldName) {
+    public static Object classAttributeGetter(String className, Object obj, String fieldName) {
         try {
             Class<?> clazz = Class.forName(className);
-            return yixvfreyetriy(clazz, obj, fieldName);
+            return attributeGetter(clazz, obj, fieldName);
         } catch (ClassNotFoundException | IllegalArgumentException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public static boolean yiegtikwkhqwt(Class<?> clazz, Object obj, String fieldName, Object value) {
+    public static boolean attributeSetter(Class<?> clazz, Object obj, String fieldName, Object value) {
         try {
             Field field = clazz.getDeclaredField(fieldName);
             field.setAccessible(true);
@@ -80,10 +84,10 @@ public class wimupug {
         }
     }
 
-    public static boolean yiegtikwkhqwt(String className, Object obj, String fieldName, Object value) {
+    public static boolean classAttributeSetter(String className, Object obj, String fieldName, Object value) {
         try {
             Class<?> clazz = Class.forName(className);
-            yiegtikwkhqwt(clazz, obj, fieldName, value);
+            attributeSetter(clazz, obj, fieldName, value);
             return true;
         } catch (ClassNotFoundException | IllegalArgumentException e) {
             e.printStackTrace();
