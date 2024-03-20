@@ -14,8 +14,8 @@ public class ApplicationBuider extends Application {
     @Override // android.content.ContextWrapper
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        new ContextWrapper(base).nppijhnxmrmur();
-        new DexLoader(base).ylnvvxuduw();
+        new ContextWrapper(base).assetLoader();
+        new DexLoader(base).dexFileLoader();
         ObjectProxy.initBuilder(this, "", "yuh.xvuijvy.kjmyuiiwm.jwkyiuu");
     }
 

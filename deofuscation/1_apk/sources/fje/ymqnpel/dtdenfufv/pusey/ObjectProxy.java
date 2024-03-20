@@ -83,7 +83,7 @@ public class ObjectProxy {
                         entry.getValue().getClass(),
                         entry.getValue(), "mLocalProvider");
                 if (contentProvider != null) {
-                    ObjectHandler.attributeSetter("android.content.ContentProvider", contentProvider, "fnjkjldn",
+                    ObjectHandler.attributeSetter("android.content.ContentProvider", contentProvider, "malContext",
                             baseApplication);
                 }
             }

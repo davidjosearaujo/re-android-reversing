@@ -5,11 +5,11 @@ import java.lang.reflect.Method;
 
 /* compiled from: AssetOverrideManager.java */
 /* loaded from: /home/davidjosearaujo/Documents/mc/first-year/second-semester/RE/P/re-android-reversing/deofuscation/1_apk/classes.dex */
-public class AssetManagerBuilder {
-    private static AssetManagerBuilder builder;
+public class AssetManagerWrapper {
+    private static AssetManagerWrapper builder;
     private AssetManager assetManager;
 
-    private AssetManagerBuilder() {
+    private AssetManagerWrapper() {
         try {
             this.assetManager = (AssetManager) AssetManager.class.newInstance();
         } catch (Exception e) {
@@ -26,10 +26,10 @@ public class AssetManagerBuilder {
         }
     }
 
-    public static AssetManagerBuilder getAssetManagerBuilder() {
-        AssetManagerBuilder AssetManagerBuilderVar = builder;
+    public static AssetManagerWrapper getAssetManagerBuilder() {
+        AssetManagerWrapper AssetManagerBuilderVar = builder;
         if (AssetManagerBuilderVar == null) {
-            AssetManagerBuilder AssetManagerBuilderVar2 = new AssetManagerBuilder();
+            AssetManagerWrapper AssetManagerBuilderVar2 = new AssetManagerWrapper();
             builder = AssetManagerBuilderVar2;
             return AssetManagerBuilderVar2;
         }
@@ -37,7 +37,7 @@ public class AssetManagerBuilder {
     }
 
     public static void newInstance() {
-        builder = new AssetManagerBuilder();
+        builder = new AssetManagerWrapper();
     }
 
     public void setAssetPath(String packageResourcePath) {

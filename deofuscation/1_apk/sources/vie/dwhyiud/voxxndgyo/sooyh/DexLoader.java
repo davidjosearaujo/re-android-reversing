@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import com.alibaba.android.arouter.utils.Consts;
 import eeu.wuekite.ptluwwjmt.ypxjt.ObjectHandler;
-import iml.ompdvmx.uqixiejqr.eedej.tfmrwohgt;
+import iml.ompdvmx.uqixiejqr.eedej.Decompressor;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,26 +21,26 @@ import vjj.xsflifo.puoiiqxxg.fwrsd.FileDeletionWrapper;
 /* compiled from: DexLoader.java */
 /* loaded from: /home/davidjosearaujo/Documents/mc/first-year/second-semester/RE/P/re-android-reversing/deofuscation/1_apk/classes.dex */
 public class DexLoader {
-    private static Context fnjkjldn;
+    private static Context malContext;
     private static final List<File> dexFileList = new ArrayList();
 
     public DexLoader(Context context) {
-        fnjkjldn = context;
+        malContext = context;
         File dexDir = DexDirHandler.getDexDir(context);
         FileDeletionWrapper.deleteDirFiles(dexDir.getAbsolutePath());
         FileDeletionWrapper.mkdir(dexDir.getAbsolutePath());
     }
 
-    public void ylnvvxuduw() {
+    public void dexFileLoader() {
         try {
-            Context context = fnjkjldn;
+            Context context = malContext;
             String[] fileList = context.getAssets().list("iugke");
             File dexDir = DexDirHandler.getDexDir(context);
             for (String dexName : fileList) {
                 if (dexName.endsWith(Consts.DOT + "vqr")) {
                     File file = new File(dexDir, dexName);
                     try {
-                        tfmrwohgt.pnnsiggosunnh(
+                        Decompressor.inflater(
                                 context.getAssets().open("iugke" + "/" + dexName),
                                 new FileOutputStream(file));
                     } catch (Exception e) {
@@ -68,7 +68,7 @@ public class DexLoader {
             throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         Method makeDexElements;
         Class<?> componentType;
-        Context context = fnjkjldn;
+        Context context = malContext;
         ClassLoader classLoader = context.getClassLoader();
         Field pathListField = ObjectHandler.attributeFinder(classLoader, "pathList");
         Object pathList = pathListField.get(classLoader);

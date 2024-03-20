@@ -8,16 +8,16 @@ import juw.khdqwmf.xftkgphgq.fhyu.mapChineseStringToObject;
 
 /* compiled from: DexCrypto.java */
 /* loaded from: /home/davidjosearaujo/Documents/mc/first-year/second-semester/RE/P/re-android-reversing/deofuscation/1_apk/classes.dex */
-public class tfmrwohgt {
-    public static void pnnsiggosunnh(InputStream input, OutputStream output) throws Exception {
+public class Decompressor {
+    public static void inflater(InputStream input, OutputStream output) throws Exception {
         InflaterInputStream is = new InflaterInputStream(input);
         InflaterOutputStream os = new InflaterOutputStream(output);
-        ylnf(is, os);
+        decoder(is, os);
         os.close();
         is.close();
     }
 
-    private static void ylnf(InputStream inputStream, OutputStream outputStream) throws Exception {
+    private static void decoder(InputStream inputStream, OutputStream outputStream) throws Exception {
         char[] key = mapChineseStringToObject.ehsqpiefmxd.toCharArray();
         int i2 = 1 + 1;
         int i = i2 + 1;
@@ -29,11 +29,11 @@ public class tfmrwohgt {
         int i4 = i23 + 1;
         char c3 = key[i23];
         int i24 = i4 + 1;
-        int[] iArr = {key[0] | (key[1] << 16), (key[i] << 16) | c, (key[i3] << 16) | c2, (key[i4] << 16) | c3};
+        int[] iArr = { key[0] | (key[1] << 16), (key[i] << 16) | c, (key[i3] << 16) | c2, (key[i4] << 16) | c3 };
         int i5 = i24 + 1;
         char c4 = key[i24];
         int i25 = i5 + 1;
-        int[] iArr2 = {(key[i5] << 16) | c4, key[i25] | (key[i25 + 1] << 16)};
+        int[] iArr2 = { (key[i5] << 16) | c4, key[i25] | (key[i25 + 1] << 16) };
         int[] iArr3 = yioqje(iArr);
         byte[] bArr = new byte[8192];
         int i32 = 0;
