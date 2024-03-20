@@ -13,7 +13,7 @@ date: March 8, 2024
 
 # Introduction
 
-For our reverse engineering course, we've chosen to analyze and reverse engineer the "PDF Reader File Manager" application. This app gained notoriety earlier this year when it was removed from the Play Store. It was developed with the intention of stealing data from Android users, as detailed in this article [here](https://www.tomsguide.com/computing/malware-adware/these-malicious-android-malware-apps-were-downloaded-150000-times-from-the-play-store-delete-them-right-now).
+For our reverse engineering course, we've chosen to analyze and reverse engineer the "PDF Reader File Manager" application. This app gained notoriety earlier this year when it was removed from the Play Store. It was developed with the intention of stealing data from Android users, as described in this article [here](https://www.tomsguide.com/computing/malware-adware/these-malicious-android-malware-apps-were-downloaded-150000-times-from-the-play-store-delete-them-right-now).
 
 # Environment and Tools
 
@@ -24,8 +24,6 @@ We used Vagrant to set up a [Kali box](https://app.vagrantup.com/kalilinux/boxes
 
 ## Tools
 
-[TODO]
-
 # Exploration Steps & Findings
 
 ## Unpack
@@ -34,7 +32,7 @@ Unzipping the file with `7za PDF_Reader_File_Manager.zip` yields the files and d
 
 ![From the zip archive](./imgs/Screenshot%20from%202024-03-08%2017-30-10.png)
 
-With a bit of investigation, we can uncover that XAPK files are essentially a package containing APKs along with other files. To extract these, we can once more utilize `7za` by running it with the XAPK file. Now, we have multiple APKs, a PNG, and a JSON file.
+With a bit of investigation, we found that that XAPK files are essentially a package containing APKs along with other files. To extract these, we can once more utilize `7za` by running it with the XAPK file. Now, we have multiple APKs, a PNG, and a JSON file.
 
 ![Extracted files](./imgs/Screenshot%20from%202024-03-05%2000-41-49.png)
 
@@ -50,7 +48,7 @@ Indeed, if we try to unzip the file, we can retrieve multiple files.
 
 We now have a large set of files from the application, however, many of them are not relevant to what we are trying to achieve and can blur our view over the whole of the application.
 
-From all of the APKs found, the first focus on the _com.tragisoap.fileandpdfmanager.apk_ has it probably is the main application, and if anything malicious is to happen, it should first come from here.
+From all of the APKs found, we focused on _com.tragisoap.fileandpdfmanager.apk_ because it's probably the main application, and if anything malicious is to happen, it should first come from here.
 
 Using `apktool`, we can expose the inner contents of the bundle. To do this we can use the following command.
 
@@ -124,7 +122,7 @@ public static void fetchFilesAndProcess() {
 }
 ```
 
-Although it's obfuscated, we can discern that it's accessing files from the domain befukiv.com to download two files. A DNS search unveils that this domain has two name servers pointing to domains in Russia.
+Although it was originally obfuscated, we can discern that it's accessing files from the domain _befukiv.com_ to download two files. A DNS search unveils that this domain has two name servers pointing to domains in Russia.
 
 ```
 ...
@@ -718,7 +716,9 @@ TODO:
 public static String ehsqpiefmxd = "捨뺑戚\ue684聳踖曡㒕躚\udafdﶃ킎";
 ```
 
-This variable is being used in _tfmrwohgt_ class as an input argument for a function that uses a lot of shift and math operations (hard to understand). However this function uses _InflaterInputStream_ and _InflaterOutputStream_ which is used to decompress data in deflate format. We compared with other decompressors available online such as (https://github.com/nayuki/Simple-DEFLATE-decompressor/tree/master) but we weren't able to identify which algorithm was being used to decompress the data. Our best conclusion is that the class is being used to decompress data and is using a string (_ehsqpiefmxd_) to decompress the data.
+This variable is being used in _tfmrwohgt_ class as an input argument for a function that uses a lot of shift and math operations (hard to understand). However this function uses _InflaterInputStream_ and _InflaterOutputStream_ which is used to decompress data in deflate format. We compared with other decompressors available online such as (https://github.com/nayuki/Simple-DEFLATE-decompressor/tree/master) but we weren't able to identify which algorithm was being used to decompress the data. We also tried to run the Decompressor code locally, but it throws a ZipException which is raised when an invalid zip is used. Some different files were used such as xapk, zip and normal files but all of them failed. Maybe attackers use this decompressor with files crafted by them.
+
+Our best conclusion is that the class is being used to decompress data and is using a string as a key (_ehsqpiefmxd_).
 
 
 #### Exploring external packages
