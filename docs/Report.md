@@ -703,40 +703,35 @@ Having said all of this, the collective functionality of these packages is to fu
 
 In a way, one can say that 1.apk acts as a '_system hijacker_', enabling an application to run without ever being initiated by the user or system directly, by replacing another application in the process.
 
-### Taking a step back
+This theory it plausible because, looking at the previous code snippet, we tried to find references in the previously analyzed code (packages with obfuscated names) and there weren't any direct references to _com.zjxyxnvvp.nxvxchltf_ packages. However there's one function that returns a package name in the following way, meaning that this may be the package name of the code being injected.
 
-TODO:
-1. talk about files imported by ContextWrapper and Dexloader.
-2. Use code from the Decompressor to create a java code so we can the decompress the files.
-3. Talk about how the packge name in ApplicationBuider.getPackageName is probably the package name of whatever is being loaded
+### Taking a step back
 
 Previously we saw some explicit file names that were handled, and now is time to take a closer look at them.
 
 Starting from the top, _ApplicationBuilder_ is called, and it's first actions are to call the _new ContextWrapper(base).assetLoader()_ and _new DexLoader(base).dexFileLoader()_.
 
-We saw the in _ContextWrapper_
+We saw that in _ContextWrapper_ a file with name 'rxrjiy.tjp' is passed to be decompressed by the proprietary _Decompressor_, howver this file is not present anywhere in the application. We can't know if it was removed or is just some 'garbage' code leftover from development. Whatever it was, it was being decompressed and added to the assets list.
 
-=====================================================
-
-```java
-public static String ehsqpiefmxd = "捨뺑戚\ue684聳踖曡㒕躚\udafdﶃ킎";
-```
-
-This variable is being used in _tfmrwohgt_ class as an input argument for a function that uses a lot of shift and math operations (hard to understand). However this function uses _InflaterInputStream_ and _InflaterOutputStream_ which is used to decompress data in deflate format. We compared with other decompressors available online such as (https://github.com/nayuki/Simple-DEFLATE-decompressor/tree/master) but we weren't able to identify which algorithm was being used to decompress the data. We also tried to run the Decompressor code locally, but it throws a ZipException which is raised when an invalid zip is used. Some different files were used such as xapk, zip and normal files but all of them failed. Maybe attackers use this decompressor with files crafted by them.
-
-Our best conclusion is that the class is being used to decompress data and is using a string as a key (_ehsqpiefmxd_).
-
-
-#### Exploring external packages
-Inside _com_ package there are some packages related to famous trademarks such as _alibaba_, _facebook_, _huawei_ and some more. Although they seem to be legit, it's not usual one pdf reader download an apk with these kind of packages, we think that they could have been tampered and some malicious code could be there, however it's hard to confirm that because these packages are full of java code.
-
-We tried to find references in the previously analyzed code (packages with obfuscated names) and there weren't any direct references to _com_ packages (except for just 1 reference which is not relevant). However there's one function that returns a package name in the following way:
+Following this, a similar action is performed at _DexLoader.dexFileLoader_ to another file in the assets directory, with path _'iugke/yrqmkvf.vqr'_. We recreated an application using the _Decompressor_ class in order to handle this file. Doing so results in a new valid DEX file.
 
 ```java
-@Override // android.content.ContextWrapper, android.content.Context
-public String getPackageName() {
-    return "com.zjxyxnvvp.nxvxchltf";
+public class Decompressor {
+
+    public static void main(String[] args) throws FileNotFoundException, Exception {
+        File in = new File("../deofuscation/1_apk/assets/iugke/yrqmkvf.vqr");
+        File out = new File(".", "decompressedMalicious");
+        inflater(new FileInputStream(in), new FileOutputStream(out));
+    }
+    ...
 }
 ```
 
-But 1.apk doesn't contain this package _com.zjxyxnvvp.nxvxchltf_, maybe 1.apk is missing some packages.
+```bash
+$ file decompressedMalicious
+decompressedMalicious: Dalvik dex file version 035
+```
+
+## Exploring 'yrqmkvf.vqr' now 'decompressedMalicious'
+
+TODO
