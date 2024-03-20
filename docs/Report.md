@@ -1,14 +1,14 @@
 ---
 geometry: margin=25mm
-title: RE - PDF Manager
+title: Reverse Engineering - PDF Manager Malicious Android Application
 author: Tiago Silvestre - 103554, David Araújo - 93444
-date: March 8, 2024
+date: March 21, 2024
 ---
 
 # Table of Contents
 1. [Introduction](#introduction)
 2. [Environment and Tools](#environment-and-tools)
-3. [Exploration Steps](#exploration-steps)
+3. [Exploration Steps & Findings](#exploration-steps-&-findings)
 4. [Conclusions](#conclusions) 
 
 # Introduction
@@ -148,18 +148,18 @@ dalvik.system.InMemoryDexClassLoader|getClassLoader|loadClass|com.travisscott.pd
 This indicates that the authors may have intended to obfuscate application method calls using reflection. To verify this assumption, we opted to analyze the _mapMuchasStringsToMethods_ method and rename its methods.
 
 ```java
-    public static void mapMuchasPuchasToMethods(byte[] bArr) {
-        Class inMemoryDexClassLoader = (Class) getClassInstanceByMethodName(Malicious.muchasStrings.get()[0]); // dalvik.system.InMemoryDexClassLoader
-        Class cls = (Class) inMemoryDexClassLoader.getMethod(Malicious.muchasStrings.get()[2], String.class).invoke(inMemoryDexClassLoader.getConstructor((Class) getClassInstanceByMethodName(Malicious.muchasStrings.get()[11]), (Class) getClassInstanceByMethodName(Malicious.muchasStrings.get()[12])).newInstance(ByteBuffer.wrap(bArr), Class.class.getMethod(Malicious.muchasStrings.get()[1], new Class[0]).invoke(Malicious.class, new Object[0])), Malicious.muchasStrings.get()[3]);
-        Malicious.makePdfPage = getClassMethod(cls, Malicious.muchasStrings.get()[10], Context.class);
-        Malicious.readPdfFile = getClassMethod(cls, Malicious.muchasStrings.get()[7], Context.class);
-        Malicious.getFirstText = getClassMethod(cls, Malicious.muchasStrings.get()[5], new Class[0]);
-        Malicious.getSecondText = getClassMethod(cls, Malicious.muchasStrings.get()[6], new Class[0]);
-        Method init = getClassMethod(cls, Malicious.muchasStrings.get()[4], Class.class, Class.class);
-        Malicious.launch = getClassMethod(cls, Malicious.muchasStrings.get()[9], Context.class);
-        Malicious.getName = getClassMethod(cls, Malicious.muchasStrings.get()[8], Context.class);
-        init.invoke(null, PartPreviewActivity.class, MainActivity.class);
-    }
+public static void mapMuchasPuchasToMethods(byte[] bArr) {
+    Class inMemoryDexClassLoader = (Class) getClassInstanceByMethodName(Malicious.muchasStrings.get()[0]); // dalvik.system.InMemoryDexClassLoader
+    Class cls = (Class) inMemoryDexClassLoader.getMethod(Malicious.muchasStrings.get()[2], String.class).invoke(inMemoryDexClassLoader.getConstructor((Class) getClassInstanceByMethodName(Malicious.muchasStrings.get()[11]), (Class) getClassInstanceByMethodName(Malicious.muchasStrings.get()[12])).newInstance(ByteBuffer.wrap(bArr), Class.class.getMethod(Malicious.muchasStrings.get()[1], new Class[0]).invoke(Malicious.class, new Object[0])), Malicious.muchasStrings.get()[3]);
+    Malicious.makePdfPage = getClassMethod(cls, Malicious.muchasStrings.get()[10], Context.class);
+    Malicious.readPdfFile = getClassMethod(cls, Malicious.muchasStrings.get()[7], Context.class);
+    Malicious.getFirstText = getClassMethod(cls, Malicious.muchasStrings.get()[5], new Class[0]);
+    Malicious.getSecondText = getClassMethod(cls, Malicious.muchasStrings.get()[6], new Class[0]);
+    Method init = getClassMethod(cls, Malicious.muchasStrings.get()[4], Class.class, Class.class);
+    Malicious.launch = getClassMethod(cls, Malicious.muchasStrings.get()[9], Context.class);
+    Malicious.getName = getClassMethod(cls, Malicious.muchasStrings.get()[8], Context.class);
+    init.invoke(null, PartPreviewActivity.class, MainActivity.class);
+}
 ```
 
 From this, we observe that the function utilizes Java reflection to dynamically assign variables of the Malicious class based on methods/classes names obtained from the _muchaspuchas_ file.
@@ -483,7 +483,7 @@ We have renamed this class to '_ObjectHandler_'. Its sole focus is to utilize re
 
 In this package, we find a class that we have renamed '_ObjectProxy_.' This is one of the most interesting classes in _1.apk_. With it, one can simply pass a string to create objects (of type Application in this scenario) and interact with them, only using strings, without ever needing to explicitly create the object ourselves, hence the name 'proxy'.
 
-In this proxy, there three main methods and a fourth auxilary one, we renamed accordingly to their function.
+In this proxy, there three main methods and a fourth auxiliary one, we renamed accordingly to their function.
 1. initBuilder
 2. threadActiviySwap
 3. setContentProvider
