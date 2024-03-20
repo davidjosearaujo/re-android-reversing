@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public class chineseDeofuscator {
+public class ChineseDeofuscator {
 
     public static void main(String[] args) {
         System.out.println("wmvpsjylkomjunuemnomk: " + chineseStringToPackageName("恊恆恛思恋恅恆恚恙恅恊思恘恙恞恊恆恚恚恄恞思恙恄恘恊恚恆恆", 2));
@@ -20,8 +20,9 @@ public class chineseDeofuscator {
         System.out.println("erslvlhdhwyiqi: " + chineseStringToPackageName("恚恆恔恘恖", 2));
         System.out.println("ifqsrmoxkldsotk: " + chineseStringToPackageName("恁恋恁恙恚恊", 2));
         System.out.println("rytluexmqwrmyvnlrle: " + chineseStringToPackageName("恇恙恃", 2));
-        System.out.println("nvoyhpvsvfsr: " +chineseStringToPackageName("恐恜恞思恉恙恋恊恋恝恅恅恃思恝恋恅恋恐恛恟恇恕", 2));
-        System.out.println("uvxtulgtnpojqhjnxmexm: " + chineseStringToPackageName("恃恛恇思恗恔恁恁恀恁恃思恛恔恗恇恔恀恀恅恄思恛恖恖恆恇恗恆恇恛恘恊恖恛恃恘恟恛恄恜恋", 2));
+        System.out.println("nvoyhpvsvfsr: " + chineseStringToPackageName("恐恜恞思恉恙恋恊恋恝恅恅恃思恝恋恅恋恐恛恟恇恕", 2));
+        System.out.println("uvxtulgtnpojqhjnxmexm: "
+                + chineseStringToPackageName("恃恛恇思恗恔恁恁恀恁恃思恛恔恗恇恔恀恀恅恄思恛恖恖恆恇恗恆恇恛恘恊恖恛恃恘恟恛恄恜恋", 2));
         System.out.println("notkmygjwgpqutdlsejxp: " + chineseStringToPackageName("", 2));
         System.out.println("ehsqpiefmxd: " + chineseStringToPackageName("捨뺑戚\\ue684聳踖曡㒕躚\\udafdﶃ킎", 2));
     }

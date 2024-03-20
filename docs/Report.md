@@ -708,7 +708,13 @@ In a way, one can say that 1.apk acts as a '_system hijacker_', enabling an appl
 TODO:
 1. talk about files imported by ContextWrapper and Dexloader.
 2. Use code from the Decompressor to create a java code so we can the decompress the files.
-3. Talk about how the packge name in ApplicationBuider.getPackageName is probably the package name of whatever is being loaded.
+3. Talk about how the packge name in ApplicationBuider.getPackageName is probably the package name of whatever is being loaded
+
+Previously we saw some explicit file names that were handled, and now is time to take a closer look at them.
+
+Starting from the top, _ApplicationBuilder_ is called, and it's first actions are to call the _new ContextWrapper(base).assetLoader()_ and _new DexLoader(base).dexFileLoader()_.
+
+We saw the in _ContextWrapper_
 
 =====================================================
 
