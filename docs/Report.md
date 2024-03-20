@@ -64,7 +64,7 @@ From this, the most crucial file is the classes.dex file, from which we can reas
 jadx -d out classes.dex
 ```
 
-## Walkthrough
+## _com.tragisoap.fileandpdfmanager_
 
 We commence our analysis in the _com.tragisoap.fileandpdfmanager.MainActivity_ class, as it serves as the application's starting point. From this class, we observe a few listeners for clicking, which is expected in a mobile application.
 
@@ -407,7 +407,7 @@ flowchart TD
     L --> M([1.apk launch])
 ```
 
-### Exploring '1.apk'
+## Exploring '1.apk'
 
 1.apk file is a compressed file containing a dex file and other files such as assets. When we try to decompress it gives an error. We decided to decompress file by file to discover where it was failing, we found that there's one file called _AndroidManifest.xml_ that fails extraction.
 We analyzed the file with _Binocle_ and we discovered that the file has a high entropy in the beginning and end of the file. Even with the use of _strings_ and hex editors we could not found any relevant information about _AndroidManifest.xml_ other than it appears to request a large set of system permissions.
@@ -437,19 +437,159 @@ public class mapChineseStringToObject {
 }
 ```
 
-The code is probably using these strings in other parts of the code with reflection.
-There's one variable that is not being passed into the function
+From searching for occurrences of this symbol, we can see that their are being used as arguments to be passed to other methods without ever needing to explicitly write the values they contain. Because of this, the obvious course of action is to translate these values, and every occurrence of "_mapChineseStringToObject.\<variable name\>_" is replace by the corresponding value it holds since they are all string objects. After doing this, this class is no longer relevant and simplifies our exploration.
+
+Going through package by package, we will explore its function and rename its obfuscated symbol to make some sense of it.
+
+### _eeu.wuekite.ptluwwjmt.ypxjt_
+
+Each package hold only one class. This first one is quite straight forward on it's behaviour even though we can't know its purpose as of yet.
+
+```java
+public class ObjectHandler {
+public static Field attributeFinder(Object instance, String name) throws NoSuchFieldException {
+    for (Class clazz = instance.getClass(); clazz != null; clazz = clazz.getSuperclass()) {
+        try {
+            Field field = clazz.getDeclaredField(name);
+            if (!field.isAccessible()) {
+                field.setAccessible(true);
+            }
+            return field;
+        } catch (NoSuchFieldException e) {
+        }
+    }
+    throw new NoSuchFieldException("Field " + name + " not found in " + instance.getClass());
+}
+
+public static Method methodFinder(Object instance, String name, Class... parameterTypes)
+        throws NoSuchMethodException {
+    for (Class clazz = instance.getClass(); clazz != null; clazz = clazz.getSuperclass()) {
+        try {
+            Method method = clazz.getDeclaredMethod(name, parameterTypes);
+            if (!method.isAccessible()) {
+                method.setAccessible(true);
+            }
+            return method;
+        } catch (NoSuchMethodException e) {
+        }
+    }
+    throw new NoSuchMethodException("Method " + name + " with parameters " + Arrays.asList(parameterTypes)
+            + " not found in " + instance.getClass());
+}
+// ... more similar methods ...
+```
+
+We have renamed this class to '_ObjectHandler_'. Its sole focus is to utilize reflection for receiving class objects and handling them in a manner that allows for the discovery of their fields and methods. Moreover, it enables reading and writing fields and invoking class methods, including the possibility of passing arguments. It truly embodies the concept of an 'object handler,' as it empowers the application to manage other objects through reflection.
+
+###  _fje.ymqnpel.dtdenfufv.pusey_
+
+In this package, we find a class that we have renamed '_ObjectProxy_.' This is one of the most interesting classes in _1.apk_. With it, one can simply pass a string to create objects (of type Application in this scenario) and interact with them, only using strings, without ever needing to explicitly create the object ourselves, hence the name 'proxy'.
+
+In this proxy, there three main methods and a fourth auxilary one, we renamed accordingly to their function.
+1. initBuilder
+2. threadActiviySwap
+3. setContentProvider
+4. getCurrentActivityThread
+
+Starting with the simplest, _getCurrentActivityThread_, this simply returns the current thread where the activity is running.
+
+The first one, _initBuilder_, is capable of receiving an application's package name as a string, creating the Application object, and then attaching this new application to the current activity.
+
+```java
+private static Application baseApplication;
+
+public static void initBuilder(Application application, String delegateApplicationName, String stubApplicationName) {
+    if (TextUtils.isEmpty(delegateApplicationName) || stubApplicationName.equals(delegateApplicationName)) {
+        baseApplication = application;
+        return;
+    }
+    try {
+        Context contextImpl = application.getBaseContext();
+        ClassLoader classLoader = application.getClassLoader();
+        Class<?> applicationClass = classLoader.loadClass(delegateApplicationName);
+        Application application2 = (Application) applicationClass.newInstance();
+        baseApplication = application2;
+        ObjectHandler.methodCaller(Application.class, application2, new Object[] { contextImpl }, "attach",
+                Context.class);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+```
+
+The second one, _threadActiviySwap_, is designed to replace the existing application with the new _Application_ within the current thread. By doing so, it effectively switches the active application within the current thread to this new object.
+
+```java
+public static void threadActiviySwap(Application application, String stubApplicationName) {
+    Application application2 = baseApplication;
+    if (application2 == null || stubApplicationName.equals(application2.getClass().getName())) {
+        return;
+    }
+    try {
+        Context contextImpl = application.getBaseContext();
+        ObjectHandler.methodCaller(contextImpl.getClass(), contextImpl, new Object[] { baseApplication },
+                "setOuterContext", Context.class);
+        Object mMainThread = ObjectHandler.attributeGetter(contextImpl.getClass(), contextImpl, "mMainThread");
+        ObjectHandler.attributeSetter("android.app.ActivityThread", mMainThread, "mInitialApplication",
+                baseApplication);
+        ArrayList<Application> mAllApplications = (ArrayList) ObjectHandler.classAttributeGetter(
+                "android.app.ActivityThread",
+                mMainThread, "mAllApplications");
+        mAllApplications.add(baseApplication);
+        mAllApplications.remove(application);
+        Object loadedApk = ObjectHandler.attributeGetter(contextImpl.getClass(), contextImpl, "mPackageInfo");
+        ObjectHandler.attributeSetter("android.app.LoadedApk", loadedApk, "mApplication", baseApplication);
+        ApplicationInfo applicationInfo = (ApplicationInfo) ObjectHandler.classAttributeGetter(
+                "android.app.LoadedApk",
+                loadedApk, "mApplicationInfo");
+        applicationInfo.className = baseApplication.getClass().getName();
+        baseApplication.onCreate();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+```
+
+The third method, _setContentProvider_ appears to aims to replace the content provider associated with the given current application with the content provider associated with the new application it created.
+
+```java
+public static Application setContentProvider(Application application, String stubApplicationName) {
+    Application application2 = baseApplication;
+    if (application2 == null || stubApplicationName.equals(application2.getClass().getName())) {
+        return application;
+    }
+    try {
+        Context contextImpl = application.getBaseContext();
+        Object loadedApk = ObjectHandler.attributeGetter(contextImpl.getClass(), contextImpl, "mPackageInfo");
+        ObjectHandler.attributeSetter("android.app.LoadedApk", loadedApk, "mApplication", baseApplication);
+        Object activityThread = getCurrentActivityThread();
+        Map<Object, Object> mProviderMap = (Map) ObjectHandler.attributeGetter(activityThread.getClass(),
+                activityThread,
+                "mProviderMap");
+        Set<Map.Entry<Object, Object>> entrySet = mProviderMap.entrySet();
+        for (Map.Entry<Object, Object> entry : entrySet) {
+            ContentProvider contentProvider = (ContentProvider) ObjectHandler.attributeGetter(
+                    entry.getValue().getClass(),
+                    entry.getValue(), "mLocalProvider");
+            if (contentProvider != null) {
+                ObjectHandler.attributeSetter("android.content.ContentProvider", contentProvider, "fnjkjldn",
+                        baseApplication);
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return baseApplication;
+}
+```
+
+What is interesting here as a clue, it that the content provider value for the field has to be in clear text, and we can clearly see it is '_fnjkjldn_'.
 
 ```java
 public static String ehsqpiefmxd = "捨뺑戚\ue684聳踖曡㒕躚\udafdﶃ킎";
 ```
 
 This variable is being used in _tfmrwohgt_ class as an input argument for a function that uses a lot of shift and math operations (hard to understand). However this function uses _InflaterInputStream_ and _InflaterOutputStream_ which is used to decompress data in deflate format. We compared with other decompressors available online such as (https://github.com/nayuki/Simple-DEFLATE-decompressor/tree/master) but we weren't able to identify which algorithm was being used to decompress the data. Our best conclusion is that the class is being used to decompress data and is using a string (_ehsqpiefmxd_) to decompress the data.
-
-Despite all of this, since this package is heavily ofuscated, the simplest action at this point was to replace all the references to these variable by their content in string format, as search in the directory for all of the occurrences of these strings.
-
-Searching for the first value _jwkyiuu_ gives us a class of the same name, in a package of the same name as the value contained by the variable: _yuh.xvuijvy.kjmyuiiwm.jwkyiuu_. This class appears to exist with the sole purpose of ofuscation, has it behaviour appear to work as some sort of "applicational proxy", has it's method only action is to pass the class own name to another package that elaborates on the desired action.
-
 
 
 #### Exploring external packages

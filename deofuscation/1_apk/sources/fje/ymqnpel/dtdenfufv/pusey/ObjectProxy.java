@@ -13,7 +13,7 @@ import java.util.Set;
 
 /* compiled from: ApplicationHook.java */
 /* loaded from: /home/davidjosearaujo/Documents/mc/first-year/second-semester/RE/P/re-android-reversing/deofuscation/1_apk/classes.dex */
-public class ApplicationBoilerplate {
+public class ObjectProxy {
     private static Application baseApplication;
 
     public static void initBuilder(Application application, String delegateApplicationName,
@@ -35,7 +35,7 @@ public class ApplicationBoilerplate {
         }
     }
 
-    public static void onCreateBuilder(Application application, String stubApplicationName) {
+    public static void threadActiviySwap(Application application, String stubApplicationName) {
         Application application2 = baseApplication;
         if (application2 == null || stubApplicationName.equals(application2.getClass().getName())) {
             return;
