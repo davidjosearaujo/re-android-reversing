@@ -707,14 +707,12 @@ In a way, one can say that 1.apk acts as a '_system hijacker_', enabling an appl
 
 ### Taking a step back
 
-TODO
+TODO:
+1. talk about files imported by ContextWrapper and Dexloader.
+2. Use code from the Decompressor to create a java code so we can the decompress the files.
+3. Talk about how the packge name in ApplicationBuider.getPackageName is probably the package name of whatever is being loaded.
 
-
-
-
-
-
-
+=====================================================
 
 ```java
 public static String ehsqpiefmxd = "捨뺑戚\ue684聳踖曡㒕躚\udafdﶃ킎";
