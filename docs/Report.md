@@ -734,4 +734,73 @@ decompressedMalicious: Dalvik dex file version 035
 
 ## Exploring 'yrqmkvf.vqr' now 'decompressedMalicious'
 
-TODO
+_decompressedMalicious_ contains multiple Java classes and appears to be far more complex than anything we have seen so far.
+
+One thing we can clearly see is that our assumption regarding _com.zjxyxnvvp.nxvxchltf_ is correct, as this is, in fact, a package inside this DEX file.
+
+![missing-package](./imgs/Screenshot%20from%202024-03-21%2017-17-20.png)
+
+So we can assume that this is the new package that now takes over the process. Let's take a look inside one of the files; we'll choose _g.java_ since most of them share one important piece of code.
+
+```java
+package com.zjxyxnvvp.nxvxchltf;
+
+import android.app.ActivityManager;
+import android.content.Context;
+/* loaded from: /home/remnux/decompressedMalicious.dex */
+public class g {
+    private static short[] $ = {7230, 7228, 7211, 7222, 7209, 7222, 7211, 7206};
+
+    private static String $(int i, int i2, int i3) {
+        char[] cArr = new char[i2 - i];
+        for (int i4 = 0; i4 < i2 - i; i4++) {
+            cArr[i4] = (char) ($[i + i4] ^ i3);
+        }
+        return new String(cArr);
+    }
+
+    public static boolean a(Context context) {
+        for (ActivityManager.RunningServiceInfo runningServiceInfo : ((ActivityManager) context.getSystemService($(0, 8, 7263))).getRunningServices(Integer.MAX_VALUE)) {
+            if (niNOIAdiowanOI.class.getName().equals(runningServiceInfo.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+```
+
+The piece of code we are referring to is the _$_ method and the _$_ array of shorts. The fact that this is common among all classes raises red flags. Therefore, we copied the code and ran it to see what it's all about. Although we can infer from the context that it contains strings of some kind.
+
+This is our _StringBuilder_, and we executed it with the short array from _g.java_.
+
+```java
+public class StringBuilder {
+
+    public static void main(String[] args) {
+        short[] array = {7230, 7228, 7211, 7222, 7209, 7222, 7211, 7206};
+        $(0, array.length, 7263, array);
+    }
+
+    private static void $(int i, int i2, int i3, short[] arr) {
+        char[] cArr = new char[i2 - i];
+        for (int i4 = 0; i4 < i2 - i; i4++) {
+            cArr[i4] = (char) (arr[i + i4] ^ i3);
+        }
+        System.out.println(new String(cArr));
+    }
+}
+```
+
+```bash
+$ java StringBuilder
+activity
+```
+
+So, we were correct; it is a string. This kind of obfuscation is quite time-consuming and out of scope for our type of analysis, given the time constraints. However, when running our application with other arrays of shorts from different files, we get strings like: '_android.intent.action.UNINSTALL_PACKAGE_', '_package:_', among others.
+
+The fascinating thing about this approach is that with a single array of shorts, depending on the values passed at _$(0, 8, 7263)_, it can generate different strings.
+
+We cannot know exactly what this application does right now. We can only assume that it's not legitimate given the context of how it initiated its action without the consent or knowledge of the user, and the effort the developers have put into obfuscating its contents.
+
+# Conclusion
