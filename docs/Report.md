@@ -818,3 +818,10 @@ The fascinating thing about this approach is that with a single array of shorts,
 We cannot know exactly what this application does right now. We can only assume that it's not legitimate given the context of how it initiated its action without the consent or knowledge of the user, and the effort the developers have put into obfuscating its contents.
 
 # Conclusion
+In this reverse engeneering work we analyzed a pdf reader android application banned recently from play store. We discovered that malicius code was being obfuscated with java reflection. Later on, we found that the application was downloading some two files from suspicius domains.
+
+One of the files was being used to download a third file which was an apk (1.apk). This apk contained a lot of java code, including other files such as assets. We decided to explore this apk and deofuscate a list of packages with ofuscated names revealing that this apk was being used to unzip a file (contained in the apk) with a custom algorithm (which only worked for files crafted by attackers).
+
+After unzipping the file locally, another file with java code appeared. This decompressed file was slightly analyzed revealing some red flags such using integer arrays and then converting them into strings. These strings were being converted (in our test) into java class names.
+
+Our exploration ended here due time constraints. But a future analyzis would be focused on keeping exploring this unzipped file.
