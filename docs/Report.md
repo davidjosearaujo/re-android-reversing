@@ -36,6 +36,8 @@ We used Vagrant to set up a [Kali box](https://app.vagrantup.com/kalilinux/boxes
 
 6. **apktool**: Decompile apk files.
 
+7. **Binocle**: View files in a 2D plane.
+
 # Exploration Steps & Findings
 
 ## Unpack
