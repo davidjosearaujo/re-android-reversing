@@ -818,10 +818,10 @@ The fascinating thing about this approach is that with a single array of shorts,
 We cannot know exactly what this application does right now. We can only assume that it's not legitimate given the context of how it initiated its action without the consent or knowledge of the user, and the effort the developers have put into obfuscating its contents.
 
 # Conclusion
-In this reverse engeneering work we analyzed a pdf reader android application banned recently from play store. We discovered that malicius code was being obfuscated with java reflection. Later on, we found that the application was downloading some two files from suspicius domains.
+In this reverse engineering endeavor, we analyzed a PDF reader Android application recently banned from the Play Store. Our investigation revealed that malicious code was obfuscated using Java reflection. Subsequently, we discovered that the application was downloading two files from suspicious domains.
 
-One of the files was being used to download a third file which was an apk (1.apk). This apk contained a lot of java code, including other files such as assets. We decided to explore this apk and deofuscate a list of packages with ofuscated names revealing that this apk was being used to unzip a file (contained in the apk) with a custom algorithm (which only worked for files crafted by attackers).
+One of these files was utilized to download a third file, which was an APK named '1.apk'. This APK contained extensive Java code, including various files such as assets. Intrigued, we decided to delve deeper into this APK and deobfuscate a list of packages with obfuscated names, uncovering its purpose to unzip a file (embedded within the APK) using a custom algorithm specifically designed by the attackers. Furthermore, this APK had the capability to initiate this newly unpacked package and inject it into the thread running the main application.
 
-After unzipping the file locally, another file with java code appeared. This decompressed file was slightly analyzed revealing some red flags such using integer arrays and then converting them into strings. These strings were being converted (in our test) into java class names.
+Upon successfully unzipping the file locally, we encountered another file containing Java code. Our initial analysis of this decompressed file raised concerns, notably the usage of integer arrays which were then converted into strings. These strings, as observed during our testing, were subsequently transformed into Java class names.
 
-Our exploration ended here due time constraints. But a future analyzis would be focused on keeping exploring this unzipped file.
+Regrettably, our exploration had to be halted due to time constraints. However, a future analysis would aim to further investigate this unpacked file.
