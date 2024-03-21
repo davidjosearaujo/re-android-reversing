@@ -24,6 +24,18 @@ We used Vagrant to set up a [Kali box](https://app.vagrantup.com/kalilinux/boxes
 
 ## Tools
 
+1. **JADX**: Used to decompile DEX files and do some code deofuscation.
+
+2. **VS Code**: Used to analyze decompiled code and do some code deofuscation.
+
+3. **Java compiler**: Some code was run locally to analyze it's runtime behaviour.
+
+4. **strings**: Find strings inside files.
+
+5. **file**: Classify files types based on their content.
+
+6. **apktool**: Decompile apk files.
+
 # Exploration Steps & Findings
 
 ## Unpack
