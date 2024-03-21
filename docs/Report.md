@@ -53,13 +53,13 @@ From all of the APKs found, we focused on _com.tragisoap.fileandpdfmanager.apk_ 
 Using `apktool`, we can expose the inner contents of the bundle. To do this we can use the following command.
 
 ```bash
-apktool d -r -s com.tragisoap.fileandpdfmanager.apk
+$ apktool d -r -s com.tragisoap.fileandpdfmanager.apk
 ```
 
 From this, the most crucial file is the classes.dex file, from which we can reassemble the Java class files. To accomplish this, we can utilize `jadx` with the following command.
 
 ```bash
-jadx -d out classes.dex
+$ jadx -d out classes.dex
 ```
 
 ## _com.tragisoap.fileandpdfmanager_
