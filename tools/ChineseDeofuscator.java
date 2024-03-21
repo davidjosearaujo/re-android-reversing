@@ -25,6 +25,8 @@ public class ChineseDeofuscator {
                 + chineseStringToPackageName("恃恛恇思恗恔恁恁恀恁恃思恛恔恗恇恔恀恀恅恄思恛恖恖恆恇恗恆恇恛恘恊恖恛恃恘恟恛恄恜恋", 2));
         System.out.println("notkmygjwgpqutdlsejxp: " + chineseStringToPackageName("", 2));
         System.out.println("ehsqpiefmxd: " + chineseStringToPackageName("捨뺑戚\\ue684聳踖曡㒕躚\\udafdﶃ킎", 2));
+
+        System.out.println(chineseStringToPackageName("憺憵憿憩憴憲憿懵憲憵憯憾憵憯懵憺憸憯憲憴憵懵憎憕憒憕憈憏憚憗憗憄憋憚憘憐憚憜憞箪箻箹箱箻箽箿篠绨继续绻绦绠续级绠继绽绬继绽级绬绱绽绻绨级绛绌绝络绛织绖绛绌绚络绅绝", 0));
     }
 
     public static String chineseStringToPackageName(String str, int i) {
