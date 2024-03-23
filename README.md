@@ -57,19 +57,19 @@ We used Vagrant to set up a [Kali box](https://app.vagrantup.com/kalilinux/boxes
 
 Unzipping the file with `7za PDF_Reader_File_Manager.zip` yields the files and directory displayed below.
 
-![From the zip archive](./imgs/Screenshot%20from%202024-03-08%2017-30-10.png)
+![From the zip archive](./docs/imgs/Screenshot%20from%202024-03-08%2017-30-10.png)
 
 With a bit of investigation, we found that that XAPK files are essentially a package containing APKs along with other files. To extract these, we can once more utilize `7za` by running it with the XAPK file. Now, we have multiple APKs, a PNG, and a JSON file.
 
-![Extracted files](./imgs/Screenshot%20from%202024-03-05%2000-41-49.png)
+![Extracted files](./docs/imgs/Screenshot%20from%202024-03-05%2000-41-49.png)
 
 When attempting to execute `apktool d 1.apk` or `jadx -d out 1.apk`, we encounter an error. This issue doesn't arise with any other APK. Upon inspecting the file signatures, we discover that **1.apk is not a valid APK** file.
 
-![APK files signatures](./imgs/Screenshot%20from%202024-03-08%2017-40-55.png)
+![APK files signatures](./docs/imgs/Screenshot%20from%202024-03-08%2017-40-55.png)
 
 Indeed, if we try to unzip the file, we can retrieve multiple files.
 
-![Inside the 1.apk](./imgs/Screenshot%20from%202024-03-08%2017-45-52.png)
+![Inside the 1.apk](./docs/imgs/Screenshot%20from%202024-03-08%2017-45-52.png)
 
 ### Decompiling
 
